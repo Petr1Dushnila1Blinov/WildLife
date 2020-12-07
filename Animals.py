@@ -1,6 +1,8 @@
 import math
-from Landscape import *
 
+from contracts import contract
+
+from Landscape import *
 
 def lake_force(mass, x_coord, y_coord):
     """
@@ -12,7 +14,6 @@ def lake_force(mass, x_coord, y_coord):
     force_x = mass * M / r ** 2 * (x_coord - x_lake) / r
     force_y = mass * M / r ** 2 * (y_coord - y_lake) / r
     return force_x, force_y
-
 
 
 def obj_force(obj, mass, x_coord, y_coord, x_obj, y_obj, MASS):
@@ -31,31 +32,42 @@ def obj_force(obj, mass, x_coord, y_coord, x_obj, y_obj, MASS):
     return force_x, force_y
 
 
+class Clock:
+    def __init__(self):
+        self.is_running = False
+        self.stop_time = 0
+
+    def start(self, period):
+        self.is_running = True
+        self.stop_time = time.time() + period
+
+    def update(self):
+        if time.time() > self.stop_time:
+            self.is_running = False
+
+
 class Animal:
     def __init__(self):
         self.coord_x = 1  # x coordinate
         self.coord_y = 1  # y coordinate
-        self.velocity_x = 1  # speed x-axis
-        self.velocity_y = 1  # speed y-axis
+        self.velocity_x = 0  # speed x-axis
+        self.velocity_y = 0  # speed y-axis
         self.hunger = 0  # represents how hungry the animal is
         self.thirst = 0  # represents how thirsty the animal is
         self.health = 100  # represents the health points
         self.mass = 10**3  # mass of the animal
-        self.radius = 1  # radius of image
+        self.radius = 15  # radius of image
         self.color = 'green'
         # creates the image of an animal
-        self.id = canv.create_oval(self.coord_x - self.radius,
-                                   self.coord_y - self.radius,
-                                   self.coord_x + self.radius,
-                                   self.coord_y + self.radius,
-                                   fill=self.color)
 
-    def move(self):
+    def move(self, delta_t):
+        self.coord_x += self.velocity_x * delta_t
+        self.coord_y += self.velocity_y * delta_t
         canv.coords(self.id,
-                    self.coord_x - self.radius + self.velocity_x,
-                    self.coord_y - self.radius + self.velocity_y,
-                    self.coord_x + self.radius + self.velocity_x,
-                    self.coord_y + self.radius + self.velocity_y)
+                    self.coord_x - self.radius,
+                    self.coord_y - self.radius,
+                    self.coord_x + self.radius,
+                    self.coord_y + self.radius)
 
     def update(self):
         pass
@@ -72,6 +84,11 @@ class Cattle(Animal):
         self.mass = 10**3  # mass of the animal
         self.color = 'green'
         self.notice_radius = 20
+        self.id = canv.create_oval(self.coord_x - self.radius,
+                                   self.coord_y - self.radius,
+                                   self.coord_x + self.radius,
+                                   self.coord_y + self.radius,
+                                   fill=self.color)
 
     def death(self):
         if self.health == 0:
@@ -94,34 +111,39 @@ class Predator(Animal):
         pass  # FIXME: озеро рядом?
 
     def state_machine(self):
-        global st_idle, st_chase, st_thirst, st_drink
-        if self.state == st_idle and self.notice_cattle():
-            self.state = st_chase
-        if self.state == st_chase and not self.notice_cattle():
-            self.state = st_idle
-        if self.state == st_idle and self.is_thirsty():
-            self.state = st_thirst
-        if self.state == st_chase and self.is_thirsty():
-            self.state = st_thirst
-        if self.state == st_thirst and self.lake_nearby():
-            self.state = st_drink
-        if not self.is_thirsty() and self.state >= st_thirst:
-            self.state = st_idle
+        if self.state == Predator.st_idle and self.notice_cattle():
+            self.state = Predator.st_chase
+        if self.state == Predator.st_chase and not self.notice_cattle():
+            self.state = Predator.st_idle
+        if self.state == Predator.st_idle and self.is_thirsty():
+            self.state = Predator.st_thirst
+        if self.state == Predator.st_chase and self.is_thirsty():
+            self.state = Predator.st_thirst
+        if self.state == Predator.st_thirst and self.lake_nearby():
+            self.state = Predator.st_drink
+        if not self.is_thirsty() and self.state >= Predator.st_thirst:
+            self.state = Predator.st_idle
 
     def __init__(self):
-        global st_idle
         Animal.__init__(self)
         self.color = 'red'
         self.mass = 10**2
         self.notice_radius = 50
-        self.state = st_idle
+        self.state = Predator.st_idle
         self.nearest_cattle = None
+        self.id = canv.create_oval(self.coord_x - self.radius,
+                                   self.coord_y - self.radius,
+                                   self.coord_x + self.radius,
+                                   self.coord_y + self.radius,
+                                   fill=self.color)
+        self.clock = Clock()
 
     def update(self):
-        global st_idle, st_chase, st_thirst, st_drink
-        if self.state == st_idle:
-            self.velocity_x = 2
-            self.velocity_y = 3
+        self.clock.update()
+        if self.state == Predator.st_idle and not self.clock.is_running:
+            self.velocity_x = randint(-15, 15)
+            self.velocity_y = randint(-15, 15)
+            self.clock.start(2)
 
     def obj_force(self, obj):
         return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
