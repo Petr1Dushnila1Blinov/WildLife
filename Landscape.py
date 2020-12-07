@@ -1,4 +1,4 @@
-from random import randrange as rnd, choice
+from random import *
 import tkinter as tk
 import math
 import time
@@ -11,5 +11,14 @@ root.geometry(str(length) + 'x' + str(height))
 canv = tk.Canvas(root, bg='lime green')
 canv.pack(fill=tk.BOTH, expand=1)
 
-
+def lake():
+    a = randint(10, 120)
+    b = randint(10, 120)
+    x = randint(0, length)
+    y = randint(0, height)
+    canv.create_oval(
+        x-a, y-b, x+a, y+b, outline="gold",
+        fill="deep sky blue", width=4
+    )
+lake()
 tk.mainloop()
