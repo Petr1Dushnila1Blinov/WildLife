@@ -1,8 +1,15 @@
-import tkinter as tk
+from Animals import *
+from Neutral_Objects import *
+from Landscape import *
 
+cattle_1 = Cattle()
+predator_1 = Predator()
 
+cattle = [cattle_1]
+predators = [predator_1]
 
-
-from Animals.py import *
-from Neutral_Objects.py import *
-from Landscape.py import *
+def main_game():
+    for p in predators:
+        p.move()
+    for c in cattle:
+        c.move()

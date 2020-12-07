@@ -30,6 +30,7 @@ class Cattle:
         if self.health == 0:
             canv.delete(self.id)
 
+
 class Predator:
     def __init__(self):
         self.coord_x = 1  # x coordinate
