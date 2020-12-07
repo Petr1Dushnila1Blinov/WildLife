@@ -28,4 +28,3 @@ def lake():
 
 (x_lake, y_lake, a_axle, b_axle) = lake()
 
-tk.mainloop()

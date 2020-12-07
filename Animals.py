@@ -2,7 +2,6 @@ import math
 from Landscape import *
 
 
-@contract
 def lake_force(mass, x_coord, y_coord):
     """
             :param mass - float, >0, масса
@@ -15,7 +14,7 @@ def lake_force(mass, x_coord, y_coord):
     return force_x, force_y
 
 
-@contract
+
 def obj_force(obj, mass, x_coord, y_coord, x_obj, y_obj, MASS):
     """
             :param obj - объект
@@ -58,6 +57,9 @@ class Animal:
                     self.coord_x + self.radius + self.velocity_x,
                     self.coord_y + self.radius + self.velocity_y)
 
+    def update(self):
+        pass
+
     def lake_force(self):
         return self.thirst * lake_force(self.mass, self.coord_x, self.coord_y)
 
@@ -69,6 +71,7 @@ class Cattle(Animal):
         self.anxiety = 0  # represents how anxious the animal is
         self.mass = 10**3  # mass of the animal
         self.color = 'green'
+        self.notice_radius = 20
 
     def death(self):
         if self.health == 0:
@@ -76,10 +79,49 @@ class Cattle(Animal):
 
 
 class Predator(Animal):
+    st_idle = 0
+    st_chase = 1
+    st_thirst = 2
+    st_drink = 3
+
+    def notice_cattle(self):
+        pass  # FIXME: Проверить, что заметил КРС
+
+    def is_thirsty(self):
+        pass  # FIXME: хочет пить?
+
+    def lake_nearby(self):
+        pass  # FIXME: озеро рядом?
+
+    def state_machine(self):
+        global st_idle, st_chase, st_thirst, st_drink
+        if self.state == st_idle and self.notice_cattle():
+            self.state = st_chase
+        if self.state == st_chase and not self.notice_cattle():
+            self.state = st_idle
+        if self.state == st_idle and self.is_thirsty():
+            self.state = st_thirst
+        if self.state == st_chase and self.is_thirsty():
+            self.state = st_thirst
+        if self.state == st_thirst and self.lake_nearby():
+            self.state = st_drink
+        if not self.is_thirsty() and self.state >= st_thirst:
+            self.state = st_idle
+
     def __init__(self):
+        global st_idle
         Animal.__init__(self)
         self.color = 'red'
         self.mass = 10**2
+        self.notice_radius = 50
+        self.state = st_idle
+        self.nearest_cattle = None
+
+    def update(self):
+        global st_idle, st_chase, st_thirst, st_drink
+        if self.state == st_idle:
+            self.velocity_x = 2
+            self.velocity_y = 3
 
     def obj_force(self, obj):
         return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
