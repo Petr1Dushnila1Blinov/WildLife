@@ -1,4 +1,5 @@
 import math
+from Landscape import *
 # needed parameters for cattle
 
 @contract
@@ -8,9 +9,6 @@ def lake_force(mass, x_coord, y_coord):
             :param x_coord - float, собственная координата x
             :param y_coord - float, собственная координата y
     """
-    global M
-    global x_lake
-    global y_lake
     r = math.sqrt((x_coord - x_lake) ** 2 + (y_coord - y_lake) ** 2)
     force_x = mass * M / r ** 2 * (x_coord - x_lake) / r
     force_y = mass * M / r ** 2 * (y_coord - y_lake) / r

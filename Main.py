@@ -15,7 +15,7 @@ def lake_force(obj):
 def main_game():
     for p in predators:
         for c in cattle:
-
+            break
         p.move()
     for c in cattle:
         c.move()
