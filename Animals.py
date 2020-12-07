@@ -1,6 +1,6 @@
 import math
 from Landscape import *
-# needed parameters for cattle
+
 
 @contract
 def lake_force(mass, x_coord, y_coord):
