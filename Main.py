@@ -2,16 +2,17 @@ from Animals import *
 from Neutral_Objects import *
 from Landscape import *
 
-cattle_1 = Cattle()
-predator_1 = Predator()
+quant_cattle = 4
+cattle = [0] * quant_cattle
+for i in range(quant_cattle):
+    cattle[i] = Cattle()
 
-cattle = [cattle_1]
-predators = [predator_1]
+quant_predators = 2
+predators = [0] * quant_predators
+for i in range(quant_predators):
+    predators[i] = Predator()
 
 
-def lake_force(obj):
-
-    obj.coord_x =
 def main_game():
     for p in predators:
         for c in cattle:
