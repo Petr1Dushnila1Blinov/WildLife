@@ -65,7 +65,7 @@ class Cattle:
             canv.delete(self.id)
 
     def lake_force(self):
-        lake_force(self.mass, self.coord_x, self.coord_y)
+        return self.thirst / 5 * lake_force(self.mass, self.coord_x, self.coord_y)
 
     def obj_force(self, obj):
         obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
@@ -101,6 +101,6 @@ class Predator:
         lake_force(self.mass, self.coord_x, self.coord_y)
 
     def obj_force(self, obj):
-        obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
+        return self.hunger / 5 * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
 
 
