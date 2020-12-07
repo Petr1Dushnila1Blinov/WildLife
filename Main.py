@@ -21,11 +21,10 @@ current_time = time.time()
 
 
 def main_game():
-    global delta_t, current_time
+    global delta_t, current_time, cattle, predators
     delta_t = time.time() - current_time
     current_time = time.time()
     for p in predators:
-
         r_min = 1000000000
         p.nearest_cattle = None
         for c in cattle:
@@ -33,11 +32,14 @@ def main_game():
             if r <= r_min:
                 p.nearest_cattle = c
                 r_min = r
+        if p.nearest_cattle != None:
+            if p.nearest_cattle.death():
+                cattle.remove(p.nearest_cattle)
+                del p.nearest_cattle
+                p.nearest_cattle = None
         p.update()
         p.move(delta_t)
     for c in cattle:
-        if c.death():
-            cattle.remove(c)
         c.update()
         c.move(delta_t)
 

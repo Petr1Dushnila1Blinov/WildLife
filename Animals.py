@@ -94,6 +94,7 @@ class Cattle(Animal):
     def death(self):
         if self.health <= 0:
             canv.delete(self.id)
+            return True
 
     def update(self):
         self.clock.update()
@@ -154,6 +155,7 @@ class Predator(Animal):
         self.clock = Clock()
 
     def update(self):
+        self.state_machine()
         self.clock.update()
         if self.state == Predator.st_idle and not self.clock.is_running:
             self.velocity_x = randint(-15, 15)
@@ -165,10 +167,9 @@ class Predator(Animal):
             r = math.sqrt(d_x ** 2 + d_y ** 2)
             if r < self.radius:
                 self.nearest_cattle.health -= 10
-            self.nearest_cattle.death()
             self.velocity_x = d_x / r * abs(d_x)
             self.velocity_y = d_y / r * abs(d_y)
-        self.state_machine()
+
 
     def obj_force(self, obj):
         return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
