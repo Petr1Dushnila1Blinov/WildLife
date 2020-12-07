@@ -10,6 +10,8 @@ predators = [predator_1]
 
 def main_game():
     for p in predators:
+        for c in cattle:
+
         p.move()
     for c in cattle:
         c.move()
