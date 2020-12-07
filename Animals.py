@@ -89,10 +89,18 @@ class Cattle(Animal):
                                    self.coord_x + self.radius,
                                    self.coord_y + self.radius,
                                    fill=self.color)
+        self.clock = Clock()
 
     def death(self):
-        if self.health == 0:
+        if self.health <= 0:
             canv.delete(self.id)
+
+    def update(self):
+        self.clock.update()
+        if not self.clock.is_running:
+            self.velocity_x = randint(-15, 15)
+            self.velocity_y = randint(-15, 15)
+            self.clock.start(2)
 
 
 class Predator(Animal):
@@ -102,7 +110,14 @@ class Predator(Animal):
     st_drink = 3
 
     def notice_cattle(self):
-        pass  # FIXME: Проверить, что заметил КРС
+        if self.nearest_cattle == None:
+            return False
+        r = math.sqrt((self.nearest_cattle.coord_x - self.coord_x) ** 2 +
+                      (self.nearest_cattle.coord_y - self.coord_y) ** 2)
+        if r <= self.notice_radius:
+            return True
+        else:
+            return False
 
     def is_thirsty(self):
         pass  # FIXME: хочет пить?
@@ -128,7 +143,7 @@ class Predator(Animal):
         Animal.__init__(self)
         self.color = 'red'
         self.mass = 10**2
-        self.notice_radius = 50
+        self.notice_radius = 300
         self.state = Predator.st_idle
         self.nearest_cattle = None
         self.id = canv.create_oval(self.coord_x - self.radius,
@@ -144,6 +159,16 @@ class Predator(Animal):
             self.velocity_x = randint(-15, 15)
             self.velocity_y = randint(-15, 15)
             self.clock.start(2)
+        if self.state == Predator.st_chase:
+            d_x = (- self.coord_x + self.nearest_cattle.coord_x)
+            d_y = (- self.coord_y + self.nearest_cattle.coord_y)
+            r = math.sqrt(d_x ** 2 + d_y ** 2)
+            if r < self.radius:
+                self.nearest_cattle.health -= 10
+            self.nearest_cattle.death()
+            self.velocity_x = d_x / r * abs(d_x)
+            self.velocity_y = d_y / r * abs(d_y)
+        self.state_machine()
 
     def obj_force(self, obj):
         return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
