@@ -3,7 +3,7 @@ from Landscape import *
 # needed parameters for cattle
 
 @contract
-def force(mass, x_coord, y_coord):
+def lake_force(mass, x_coord, y_coord):
     """
             m - float, >0, масса
             a - float, >0, x_coord
@@ -13,6 +13,14 @@ def force(mass, x_coord, y_coord):
     force_x = mass * M / r ** 2 * (x_coord - x_lake) / r
     force_y = mass * M / r ** 2 * (y_coord - y_lake) / r
     return force_x, force_y
+
+
+def obj_force(obj, mass, x_coord, y_coord, x_obj, y_obj, M):
+    r = math.sqrt((x_coord - x_obj) ** 2 + (y_coord - y_obj) ** 2)
+    force_x = mass * M / r ** 2 * (x_coord - x_obj) / r
+    force_y = mass * M / r ** 2 * (y_coord - y_obj) / r
+    return force_x, force_y
+
 
 # needed parameters for cattle
 class Cattle:
@@ -47,7 +55,11 @@ class Cattle:
             canv.delete(self.id)
 
     def lake_force(self):
-        force(self.mass, self.coord_x, self.coord_y)
+        lake_force(self.mass, self.coord_x, self.coord_y)
+
+    def obj_force(self, obj):
+        obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
+
 
 class Predator:
     def __init__(self):
@@ -76,6 +88,9 @@ class Predator:
                     self.coord_y + self.radius + self.velocity_y)
 
     def lake_force(self):
-        force(self.mass, self.coord_x, self.coord_y)
+        lake_force(self.mass, self.coord_x, self.coord_y)
+
+    def obj_force(self, obj):
+        obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
 
 
