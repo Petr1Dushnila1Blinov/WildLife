@@ -98,9 +98,7 @@ class Predator:
                     self.coord_y + self.radius + self.velocity_y)
 
     def lake_force(self):
-        lake_force(self.mass, self.coord_x, self.coord_y)
+        return self.thirst / 5 * lake_force(self.mass, self.coord_x, self.coord_y)
 
     def obj_force(self, obj):
         return self.hunger / 5 * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
-
-
