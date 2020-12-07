@@ -23,5 +23,7 @@ def lake():
         fill="deep sky blue", width=4
     )
     return (x, y, a, b)
-lake()
+
+(x_lake, y_lake, a_axle, b_axle) = lake()
+
 tk.mainloop()
