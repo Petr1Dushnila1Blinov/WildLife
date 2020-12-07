@@ -11,18 +11,20 @@ root.geometry(str(length) + 'x' + str(height))
 canv = tk.Canvas(root, bg='lime green')
 canv.pack(fill=tk.BOTH, expand=1)
 
+
 def lake():
-    global M
-    M = 10**3
+    global M, x_lake, y_lake
+    M = 10 ** 3
     a = randint(20, 120)
     b = randint(20, 120)
-    x = randint(0, length)
-    y = randint(0, height)
+    x_lake = randint(0, length)
+    y_lake = randint(0, height)
     canv.create_oval(
-        x-a, y-b, x+a, y+b, outline="gold",
+        x_lake - a, y_lake - b, x_lake + a, y_lake + b, outline="gold",
         fill="deep sky blue", width=4
     )
-    return (x, y, a, b)
+    return x_lake, y_lake, a, b
+
 
 (x_lake, y_lake, a_axle, b_axle) = lake()
 
