@@ -171,6 +171,7 @@ class Predator(Animal):
         self.state = Predator.st_idle
         self.nearest_cattle = None
         self.health = 30
+        self.velocity = 20
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,
@@ -185,8 +186,9 @@ class Predator(Animal):
             self.death()
         else:
             if self.state == Predator.st_idle and not self.clock.is_running:
-                self.velocity_x = randint(-15, 15)
-                self.velocity_y = randint(-15, 15)
+                varphi = randint(-180, 180)
+                self.velocity_x = self.velocity * math.cos(varphi)
+                self.velocity_y = self.velocity * math.sin(varphi)
                 self.clock.start(2)
                 self.health -= 10
 
@@ -197,8 +199,8 @@ class Predator(Animal):
                 if r < self.radius:
                     self.nearest_cattle.health -= 10
                 if r > 0:
-                    self.velocity_x = d_x * abs(d_x) / r
-                    self.velocity_y = d_y * abs(d_y) / r
+                    self.velocity_x = self.velocity * d_x / r
+                    self.velocity_y = self.velocity * d_y / r
 
     def obj_force(self, obj):
         return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
