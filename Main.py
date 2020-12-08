@@ -28,7 +28,7 @@ def main_game():
         r_min = 1000000000
         p.nearest_cattle = None
         for c in cattle:
-            r = math.sqrt((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2)
+            r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2)**0.5
             if r <= r_min:
                 p.nearest_cattle = c
                 r_min = r

@@ -1,7 +1,5 @@
 import math
 
-from contracts import contract
-
 from Landscape import *
 
 def lake_force(mass, x_coord, y_coord):
