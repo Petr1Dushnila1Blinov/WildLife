@@ -2,7 +2,7 @@ from Animals import *
 from Neutral_Objects import *
 from Landscape import *
 import time
-quant_cattle = 300
+quant_cattle = 320
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):
     cattle[i] = Cattle()
