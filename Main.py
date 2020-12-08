@@ -2,19 +2,19 @@ from Animals import *
 from Neutral_Objects import *
 from Landscape import *
 import time
-quant_cattle = 4
+quant_cattle = 300
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):
     cattle[i] = Cattle()
-    cattle[i].coord_x = length - 200
-    cattle[i].coord_y = height - 200
+    cattle[i].coord_x =  randint(20,length - 20)
+    cattle[i].coord_y =  randint(20,height - 20)
 
-quant_predators = 2
+quant_predators = 50
 predators = [0] * quant_predators
 for i in range(quant_predators):
     predators[i] = Predator()
-    predators[i].coord_x = 500 + i * 20
-    predators[i].coord_y = 350
+    predators[i].coord_x = randint(20,length - 20)
+    predators[i].coord_y = randint(20,height - 20)
 
 RUNNING_MATYEGO = True
 current_time = time.time()

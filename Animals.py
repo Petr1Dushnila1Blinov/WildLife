@@ -1,6 +1,9 @@
 import math
 
+# from contracts import contract
+
 from Landscape import *
+
 
 def lake_force(mass, x_coord, y_coord):
     """
@@ -53,7 +56,7 @@ class Animal:
         self.hunger = 0  # represents how hungry the animal is
         self.thirst = 0  # represents how thirsty the animal is
         self.health = 100  # represents the health points
-        self.mass = 10**3  # mass of the animal
+        self.mass = 10 ** 3  # mass of the animal
         self.radius = 15  # radius of image
         self.color = 'green'
         # creates the image of an animal
@@ -61,6 +64,18 @@ class Animal:
     def move(self, delta_t):
         self.coord_x += self.velocity_x * delta_t
         self.coord_y += self.velocity_y * delta_t
+        if self.coord_x < 0:
+            self.velocity_x *= -1
+            self.coord_x += self.velocity_x * delta_t
+        if self.coord_x > length:
+            self.velocity_x *= -1
+            self.coord_x += self.velocity_x * delta_t
+        if self.coord_y < 0:
+            self.velocity_y *= -1
+            self.coord_x += self.velocity_x * delta_t
+        if self.coord_y > height:
+            self.velocity_y *= -1
+            self.coord_x += self.velocity_x * delta_t
         canv.coords(self.id,
                     self.coord_x - self.radius,
                     self.coord_y - self.radius,
@@ -79,7 +94,7 @@ class Cattle(Animal):
     def __init__(self):
         Animal.__init__(self)
         self.anxiety = 0  # represents how anxious the animal is
-        self.mass = 10**3  # mass of the animal
+        self.mass = 10 ** 3  # mass of the animal
         self.color = 'green'
         self.notice_radius = 20
         self.id = canv.create_oval(self.coord_x - self.radius,
@@ -107,6 +122,12 @@ class Predator(Animal):
     st_chase = 1
     st_thirst = 2
     st_drink = 3
+    st_dead = 4
+
+    def death(self):
+        if self.health <= 0:
+            canv.delete(self.id)
+            return True
 
     def notice_cattle(self):
         if self.nearest_cattle == None:
@@ -125,26 +146,31 @@ class Predator(Animal):
         pass  # FIXME: озеро рядом?
 
     def state_machine(self):
-        if self.state == Predator.st_idle and self.notice_cattle():
-            self.state = Predator.st_chase
-        if self.state == Predator.st_chase and not self.notice_cattle():
-            self.state = Predator.st_idle
-        if self.state == Predator.st_idle and self.is_thirsty():
-            self.state = Predator.st_thirst
-        if self.state == Predator.st_chase and self.is_thirsty():
-            self.state = Predator.st_thirst
-        if self.state == Predator.st_thirst and self.lake_nearby():
-            self.state = Predator.st_drink
-        if not self.is_thirsty() and self.state >= Predator.st_thirst:
-            self.state = Predator.st_idle
+
+        if self.health < 0:
+            self.state = Predator.st_dead
+        else:
+            if self.state == Predator.st_idle and self.notice_cattle():
+                self.state = Predator.st_chase
+            if self.state == Predator.st_chase and not self.notice_cattle():
+                self.state = Predator.st_idle
+            if self.state == Predator.st_idle and self.is_thirsty():
+                self.state = Predator.st_thirst
+            if self.state == Predator.st_chase and self.is_thirsty():
+                self.state = Predator.st_thirst
+            if self.state == Predator.st_thirst and self.lake_nearby():
+                self.state = Predator.st_drink
+            if not self.is_thirsty() and self.state >= Predator.st_thirst:
+                self.state = Predator.st_idle
 
     def __init__(self):
         Animal.__init__(self)
         self.color = 'red'
-        self.mass = 10**2
+        self.mass = 10 ** 2
         self.notice_radius = 300
         self.state = Predator.st_idle
         self.nearest_cattle = None
+        self.health = 30
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,
@@ -155,19 +181,24 @@ class Predator(Animal):
     def update(self):
         self.state_machine()
         self.clock.update()
-        if self.state == Predator.st_idle and not self.clock.is_running:
-            self.velocity_x = randint(-15, 15)
-            self.velocity_y = randint(-15, 15)
-            self.clock.start(2)
-        if self.state == Predator.st_chase:
-            d_x = (- self.coord_x + self.nearest_cattle.coord_x)
-            d_y = (- self.coord_y + self.nearest_cattle.coord_y)
-            r = math.sqrt(d_x ** 2 + d_y ** 2)
-            if r < self.radius:
-                self.nearest_cattle.health -= 10
-            self.velocity_x = d_x / r * abs(d_x)
-            self.velocity_y = d_y / r * abs(d_y)
+        if self.state == Predator.st_dead:
+            self.death()
+        else:
+            if self.state == Predator.st_idle and not self.clock.is_running:
+                self.velocity_x = randint(-15, 15)
+                self.velocity_y = randint(-15, 15)
+                self.clock.start(2)
+                self.health -= 10
 
+            if self.state == Predator.st_chase:
+                d_x = (- self.coord_x + self.nearest_cattle.coord_x)
+                d_y = (- self.coord_y + self.nearest_cattle.coord_y)
+                r = math.sqrt(d_x ** 2 + d_y ** 2)
+                if r < self.radius:
+                    self.nearest_cattle.health -= 10
+                if r > 0:
+                    self.velocity_x = d_x * abs(d_x) / r
+                    self.velocity_y = d_y * abs(d_y) / r
 
     def obj_force(self, obj):
         return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
