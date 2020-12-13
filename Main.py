@@ -25,7 +25,7 @@ def main_game():
     delta_t = time.time() - current_time
     current_time = time.time()
     for p in predators:
-        r_min = 1000000000
+        r_min = 10000000000
         p.nearest_cattle = None
         for c in cattle:
             r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2)**0.5
