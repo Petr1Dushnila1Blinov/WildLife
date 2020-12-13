@@ -13,8 +13,6 @@ canv.pack(fill=tk.BOTH, expand=1)
 
 
 def lake():
-    global M, x_lake, y_lake
-    M = 10 ** 3
     a = randint(20, 120)
     b = randint(20, 120)
     x_lake = randint(0, length)

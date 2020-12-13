@@ -76,6 +76,8 @@ class Animal:
         if self.coord_y > height-self.radius:
             self.velocity_y *= -1
             self.coord_x += self.velocity_x * delta_t
+        if (x_lake - self.coord_x/a)**2+(y_lake-self.coord_y/b)**2 <= 1:
+            pass
         canv.coords(self.id,
                     self.coord_x - self.radius,
                     self.coord_y - self.radius,
