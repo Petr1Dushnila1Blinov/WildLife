@@ -6,7 +6,7 @@ import time
 root = tk.Tk()
 fr = tk.Frame(root)
 length = 800
-height = 600
+height = 500
 root.geometry(str(length) + 'x' + str(height))
 canv = tk.Canvas(root, bg='lime green')
 canv.pack(fill=tk.BOTH, expand=1)

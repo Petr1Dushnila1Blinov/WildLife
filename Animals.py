@@ -1,5 +1,6 @@
 import math
-
+global R
+R = 10
 # from contracts import contract
 
 from Landscape import *
@@ -63,7 +64,7 @@ class Animal:
         self.thirst = 0  # represents how thirsty the animal is
         self.health = 100  # represents the health points
         self.mass = 10 ** 3  # mass of the animal
-        self.radius = 10  # radius of image
+        self.radius = R # radius of image
         self.color = 'green'
         # creates the image of an animal
 
@@ -81,10 +82,11 @@ class Animal:
             self.coord_x += self.velocity_x * delta_t
         if self.coord_y < self.radius:
             self.velocity_y *= -1
-            self.coord_y += self.velocity_y * delta_t
+            self.coord_x += self.velocity_x * delta_t
         if self.coord_y > height-self.radius:
             self.velocity_y *= -1
-            self.coord_y += self.velocity_y * delta_t
+            self.coord_x += self.velocity_x * delta_t
+
         if ((x_lake - self.coord_x)/(a_axle+self.radius))**2+((y_lake-self.coord_y)/(b_axle+self.radius))**2 <= 1:
             self.velocity_y *= -1
             self.velocity_x *= -1

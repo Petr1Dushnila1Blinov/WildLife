@@ -3,19 +3,29 @@ from Neutral_Objects import *
 from Landscape import *
 import time
 
+
 quant_cattle = 45
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
-    cattle[i].coord_x = randint(20, length - 20)
-    cattle[i].coord_y = randint(20, height - 20)
+    lcoord_x = randint(20, length - 20)
+    lcoord_y = randint(20, height - 20)
+    if ((x_lake - lcoord_x)/(a_axle+R))**2+((y_lake-lcoord_y)/(b_axle+R))**2 > 1:
+        cattle[i].coord_x = lcoord_x
+        cattle[i].coord_y = lcoord_y
 
-quant_predators = 0
+
+
+quant_predators = 45
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
-    predators[i].coord_x = randint(20, length - 20)
-    predators[i].coord_y = randint(20, height - 20)
+    lcoord_x = randint(20, length - 20)
+    lcoord_y = randint(20, height - 20)
+    if ((x_lake - lcoord_x) / (a_axle + R)) ** 2 + ((y_lake - lcoord_y) / (b_axle + R)) ** 2 > 1:
+        predators[i].coord_x = lcoord_x
+        predators[i].coord_y = lcoord_y
+
 
 RUNNING_MATYEGO = True
 current_time = time.time()
