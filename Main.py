@@ -2,6 +2,7 @@ from Animals import *
 from Neutral_Objects import *
 from Landscape import *
 import time
+
 def create_started_window():
     window = tk.Tk()
     window.title("WildLife simulator")
