@@ -16,7 +16,7 @@ for i in range(quant_cattle):  # Заполняем карту жертвами
 
 
 
-quant_predators = 45
+quant_predators = 12
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
