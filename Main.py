@@ -36,19 +36,19 @@ def create_started_window():
 
 global length, heigth
 length, height = 800, 600
-quant_cattle = 120
+quant_cattle = 12
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
     lcoord_x = randint(20, length - 20)
     lcoord_y = randint(20, height - 20)
-    if ((x_lake - lcoord_x) / (a_axle + R)) ** 2 + ((y_lake - lcoord_y) / (b_axle + R)) ** 2 > 1:
+    if ((x_lake - lcoord_x)/(a_axle+R))**2+((y_lake-lcoord_y)/(b_axle+R))**2 > 1:
         cattle[i].coord_x = lcoord_x
         cattle[i].coord_y = lcoord_y
     else:
         quant_cattle += 1
 
-quant_predators = 12
+quant_predators = 3
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
@@ -59,6 +59,7 @@ for i in range(quant_predators):  # Заполняем карту хищника
         predators[i].coord_y = lcoord_y
     else:
         quant_predators += 1
+
 
 RUNNING_MATYEGO = True
 GO_START = True
@@ -78,7 +79,7 @@ def main_game():
             if r <= r_min:
                 p.nearest_cattle = c
                 r_min = r
-        if p.nearest_cattle != None:
+        if p.nearest_cattle is not None:
             if p.nearest_cattle.death():
                 cattle.remove(p.nearest_cattle)
                 del p.nearest_cattle
