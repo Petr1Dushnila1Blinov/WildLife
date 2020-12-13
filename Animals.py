@@ -125,15 +125,18 @@ class Predator(Animal):
         else:
             return False
 
-    def lake_nearby(self):
-        pass  # FIXME: озеро рядом?
-
     def is_thirsty(self):
-        pass
-        #if self.thirst >= 40:
-            #if not self.lake_nearby:
-                #self.health -= 1
-        #return True
+        if self.thirst > 60:
+            self.health -= 1
+            return True
+        else:
+            return False
+
+    def lake_nearby(self):
+        if (()/(a_axle+5))**2+(()/(b_axle+5))**2 < = 1
+
+
+
 
 
     def state_machine(self):

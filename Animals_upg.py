@@ -169,7 +169,7 @@ class Cattle(Animal):
                 else:
                     self.anaccel += 0.1
             else:
-                self.anaccel += randint(-10, 10)/200
+                self.anaccel = randint(-10, 10)/200
             if abs(self.anspeed) > 0.25:
                 if self.anspeed > 0:
                     self.anspeed -= 0.02
