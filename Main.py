@@ -3,7 +3,7 @@ from Neutral_Objects import *
 from Landscape import *
 import time
 
-quant_cattle = 1
+quant_cattle = 45
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
