@@ -2,7 +2,6 @@ import math
 global R
 R = 10
 # from contracts import contract
-
 from Landscape import *
 
 # Timer
@@ -27,8 +26,8 @@ class Clock:
 
 class Animal:
     def __init__(self):
-        self.coord_x = 1  # x coordinate
-        self.coord_y = 1  # y coordinate
+        self.coord_x = 20  # x coordinate
+        self.coord_y = 20  # y coordinate
         self.velocity_x = 0  # speed x-axis
         self.velocity_y = 0  # speed y-axis
         self.hunger = 0  # represents how hungry the animal is
@@ -61,8 +60,8 @@ class Animal:
         if ((x_lake - self.coord_x)/(a_axle+self.radius))**2+((y_lake-self.coord_y)/(b_axle+self.radius))**2 <= 1:
             self.velocity_y *= -1
             self.velocity_x *= -1
-            self.coord_x += self.velocity_x * delta_t
-            self.coord_y += self.velocity_y * delta_t
+            self.coord_x += abs(random())*self.velocity_x * delta_t
+            self.coord_y += abs(random())*self.velocity_y * delta_t
         canv.coords(self.id,
                     self.coord_x - self.radius,
                     self.coord_y - self.radius,

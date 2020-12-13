@@ -4,7 +4,7 @@ from Landscape import *
 import time
 
 
-quant_cattle = 1
+quant_cattle = 120
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
@@ -16,9 +16,7 @@ for i in range(quant_cattle):  # Заполняем карту жертвами
     else:
         quant_cattle += 1
 
-
-
-quant_predators = 1
+quant_predators = 12
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
