@@ -82,7 +82,7 @@ class Cattle(Animal):
         self.anxiety = 0  # represents how anxious the animal is
         self.mass = 10 ** 3  # mass of the animal
         self.color = 'green'
-        self.notice_radius = 20  # радиус зрения животного
+        self.notice_radius = 60  # радиус зрения животного
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,
@@ -125,14 +125,19 @@ class Predator(Animal):
         else:
             return False
 
-    def is_thirsty(self):
-        pass  # FIXME: хочет пить?
-
     def lake_nearby(self):
         pass  # FIXME: озеро рядом?
 
+    def is_thirsty(self):
+        pass
+        #if self.thirst >= 40:
+            #if not self.lake_nearby:
+                #self.health -= 1
+        #return True
+
+
     def state_machine(self):
-        if (self.health < 0) or (self.hunger > 50):
+        if (self.health < 0) or (self.hunger > 40):
             self.state = Predator.st_dead
         else:
             if self.state == Predator.st_idle and self.notice_cattle():
@@ -176,6 +181,7 @@ class Predator(Animal):
                 self.velocity_y = self.velocity * math.sin(varphi)
                 self.clock.start(2)
                 self.hunger += 10
+                self.thirst += 10
 
             if self.state == Predator.st_chase:
                 d_x = (- self.coord_x + self.nearest_cattle.coord_x)
@@ -183,10 +189,11 @@ class Predator(Animal):
                 r = math.sqrt(d_x ** 2 + d_y ** 2)
                 if r < self.radius:
                     self.nearest_cattle.health -= 10
-                    self.hunger = - 50
+                    self.hunger -= 50
+                    self.thirst += 20
                 if r > 0:
                     self.velocity_x = self.velocity * d_x / r
                     self.velocity_y = self.velocity * d_y / r
 
-    def obj_force(self, obj):
-        return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
+    #def obj_force(self, obj):
+        #return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
