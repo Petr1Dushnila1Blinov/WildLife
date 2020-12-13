@@ -13,6 +13,7 @@ global GO_MAIN
 GO_MAIN = False
 
 
+
 def create_started_window():
     window = tk.Tk()
     window.title("WildLife simulator")
