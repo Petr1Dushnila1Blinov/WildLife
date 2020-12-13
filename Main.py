@@ -4,7 +4,7 @@ from Landscape import *
 import time
 
 
-quant_cattle = 120
+quant_cattle = 5
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
@@ -16,7 +16,7 @@ for i in range(quant_cattle):  # Заполняем карту жертвами
     else:
         quant_cattle += 1
 
-quant_predators = 12
+quant_predators = 3
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
@@ -46,7 +46,7 @@ def main_game():
             if r <= r_min:
                 p.nearest_cattle = c
                 r_min = r
-        if p.nearest_cattle != None:
+        if p.nearest_cattle is not None:
             if p.nearest_cattle.death():
                 cattle.remove(p.nearest_cattle)
                 del p.nearest_cattle
@@ -54,7 +54,7 @@ def main_game():
         p.update()
         p.move(delta_t)
 
-    for c in cattle:  #Жизнь рогатого скота
+    for c in cattle:  # Жизнь рогатого скота
         c.update()
         c.move(delta_t)
 
