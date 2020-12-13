@@ -72,12 +72,15 @@ class Animal:
             self.coord_x += self.velocity_x * delta_t
         if self.coord_y < self.radius:
             self.velocity_y *= -1
-            self.coord_x += self.velocity_x * delta_t
+            self.coord_y += self.velocity_y * delta_t
         if self.coord_y > height-self.radius:
             self.velocity_y *= -1
+            self.coord_y += self.velocity_y * delta_t
+        print((x_lake - self.coord_x / a_axle) ** 2 + (y_lake - self.coord_y / b_axle) ** 2)
+        if (x_lake - self.coord_x/a_axle)**2+(y_lake-self.coord_y/b_axle)**2 <= 1:
+            self.velocity_y *= -1
+            self.velocity_x *= -1
             self.coord_x += self.velocity_x * delta_t
-        if (x_lake - self.coord_x/a)**2+(y_lake-self.coord_y/b)**2 <= 1:
-            pass
         canv.coords(self.id,
                     self.coord_x - self.radius,
                     self.coord_y - self.radius,
@@ -112,7 +115,7 @@ class Cattle(Animal):
             return True
 
     def update(self):
-        V = 30  # Скорость движения жертв
+        V = 50  # Скорость движения жертв
         self.clock.update()
         if not self.clock.is_running:
             self.velocity_x = randint(-V, V)
@@ -174,7 +177,7 @@ class Predator(Animal):
         self.state = Predator.st_idle
         self.nearest_cattle = None
         self.health = 30
-        self.velocity = 10  # Скорость передвижения хищников
+        self.velocity = 50  # Скорость передвижения хищников
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,
