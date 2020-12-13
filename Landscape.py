@@ -13,10 +13,13 @@ canv.pack(fill=tk.BOTH, expand=1)
 
 
 def lake():
-    a = randint(20, 120)
-    b = randint(20, 120)
-    x_lake = randint(0, length)
-    y_lake = randint(0, height)
+    """
+    :return: x_lake - lake x coord, y_lake - lake y coord, a - big axle, b - small axle
+    """
+    a = randint(20, 120)  # big axle
+    b = randint(20, 120)  # small axle
+    x_lake = randint(0, length)  # lake x coord
+    y_lake = randint(0, height)  # lake y coord
     canv.create_oval(
         x_lake - a, y_lake - b, x_lake + a, y_lake + b, outline="gold",
         fill="deep sky blue", width=4
