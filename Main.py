@@ -54,7 +54,7 @@ def main_game():
         p.update()
         p.move(delta_t)
 
-    for c in cattle:
+    for c in cattle:  #Жизнь рогатого скота
         c.update()
         c.move(delta_t)
 
