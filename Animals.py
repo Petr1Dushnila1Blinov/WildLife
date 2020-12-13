@@ -7,9 +7,9 @@ from Landscape import *
 
 def lake_force(mass, x_coord, y_coord):
     """
-            :param mass - float, >0, масса зверя
-            :param x_coord - float, собственная координата x
-            :param y_coord - float, собственная координата y
+            :param mass float, >0, масса зверя
+            :param x_coord float, собственная координата x
+            :param y_coord float, собственная координата y
     """
     r = math.sqrt((x_coord - x_lake) ** 2 + (y_coord - y_lake) ** 2)
     force_x = mass * M / r ** 2 * (x_coord - x_lake) / r
@@ -19,13 +19,13 @@ def lake_force(mass, x_coord, y_coord):
 
 def obj_force(obj, mass, x_coord, y_coord, x_obj, y_obj, MASS):
     """
-            :param obj - объект
-            :param mass - float, >0, масса
-            :param x_coord - float, собственная координата x
-            :param y_coord - float, собственная координата y
-            :param x_obj - float, координата x объекта
-            :param y_obj - float, координата y объекта
-            :param MASS - float, >0, масса объекта
+            :param obj объект
+            :param mass float, >0, масса
+            :param x_coord float, собственная координата x
+            :param y_coord float, собственная координата y
+            :param x_obj float, координата x объекта
+            :param y_obj float, координата y объекта
+            :param MASS float, >0, масса объекта
     """
     r = math.sqrt((x_coord - x_obj) ** 2 + (y_coord - y_obj) ** 2)
     force_x = mass * MASS / r ** 2 * (x_coord - x_obj) / r
