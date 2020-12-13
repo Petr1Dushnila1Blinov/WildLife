@@ -7,9 +7,9 @@ from Landscape import *
 
 def lake_force(mass, x_coord, y_coord):
     """
-            :param mass float, >0, масса зверя
-            :param x_coord float, собственная координата x
-            :param y_coord float, собственная координата y
+            :param mass: float, >0, масса зверя
+            :param x_coord: float, собственная координата x
+            :param y_coord: float, собственная координата y
     """
     r = math.sqrt((x_coord - x_lake) ** 2 + (y_coord - y_lake) ** 2)
     force_x = mass * M / r ** 2 * (x_coord - x_lake) / r
@@ -19,13 +19,13 @@ def lake_force(mass, x_coord, y_coord):
 
 def obj_force(obj, mass, x_coord, y_coord, x_obj, y_obj, MASS):
     """
-            :param obj объект
-            :param mass float, >0, масса
-            :param x_coord float, собственная координата x
-            :param y_coord float, собственная координата y
-            :param x_obj float, координата x объекта
-            :param y_obj float, координата y объекта
-            :param MASS float, >0, масса объекта
+            :param obj: объект
+            :param mass: float, >0, масса
+            :param x_coord: float, собственная координата x
+            :param y_coord: float, собственная координата y
+            :param x_obj: float, координата x объекта
+            :param y_obj: float, координата y объекта
+            :param MASS: float, >0, масса объекта
     """
     r = math.sqrt((x_coord - x_obj) ** 2 + (y_coord - y_obj) ** 2)
     force_x = mass * MASS / r ** 2 * (x_coord - x_obj) / r
@@ -33,15 +33,21 @@ def obj_force(obj, mass, x_coord, y_coord, x_obj, y_obj, MASS):
     return force_x, force_y
 
 
+# Timer
 class Clock:
     def __init__(self):
         self.is_running = False
         self.stop_time = 0
 
+    # makes time flowing
     def start(self, period):
+        """
+        :param period: update time
+        """
         self.is_running = True
         self.stop_time = time.time() + period
 
+    # stops time flowing
     def update(self):
         if time.time() > self.stop_time:
             self.is_running = False
@@ -62,6 +68,9 @@ class Animal:
         # creates the image of an animal
 
     def move(self, delta_t):
+        """
+        :param delta_t: update time
+        """
         self.coord_x += self.velocity_x * delta_t
         self.coord_y += self.velocity_y * delta_t
         if self.coord_x < self.radius:
@@ -149,7 +158,6 @@ class Predator(Animal):
         pass  # FIXME: озеро рядом?
 
     def state_machine(self):
-
         if self.health < 0:
             self.state = Predator.st_dead
         else:
