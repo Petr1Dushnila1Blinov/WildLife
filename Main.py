@@ -37,11 +37,11 @@ def main_game():
     global delta_t, current_time, cattle, predators
     delta_t = time.time() - current_time
     current_time = time.time()
-    for p in predators:
+
+    for p in predators:  # План действия хищников
         r_min = 1000000000
         p.nearest_cattle = None
-
-        for c in cattle:  # План действий хищников
+        for c in cattle:
             r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5
             if r <= r_min:
                 p.nearest_cattle = c
@@ -54,7 +54,7 @@ def main_game():
         p.update()
         p.move(delta_t)
 
-    for c in cattle:  # План действий жертв
+    for c in cattle:
         c.update()
         c.move(delta_t)
 
