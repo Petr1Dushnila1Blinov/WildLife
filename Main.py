@@ -4,7 +4,7 @@ from Landscape import *
 import time
 
 
-quant_cattle = 45
+quant_cattle = 1
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
@@ -13,10 +13,12 @@ for i in range(quant_cattle):  # Заполняем карту жертвами
     if ((x_lake - lcoord_x)/(a_axle+R))**2+((y_lake-lcoord_y)/(b_axle+R))**2 > 1:
         cattle[i].coord_x = lcoord_x
         cattle[i].coord_y = lcoord_y
+    else:
+        quant_cattle += 1
 
 
 
-quant_predators = 12
+quant_predators = 1
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
@@ -25,6 +27,8 @@ for i in range(quant_predators):  # Заполняем карту хищника
     if ((x_lake - lcoord_x) / (a_axle + R)) ** 2 + ((y_lake - lcoord_y) / (b_axle + R)) ** 2 > 1:
         predators[i].coord_x = lcoord_x
         predators[i].coord_y = lcoord_y
+    else:
+        quant_predators += 1
 
 
 RUNNING_MATYEGO = True
