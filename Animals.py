@@ -7,7 +7,7 @@ from Landscape import *
 
 def lake_force(mass, x_coord, y_coord):
     """
-            :param mass - float, >0, масса
+            :param mass - float, >0, масса зверя
             :param x_coord - float, собственная координата x
             :param y_coord - float, собственная координата y
     """
@@ -57,23 +57,23 @@ class Animal:
         self.thirst = 0  # represents how thirsty the animal is
         self.health = 100  # represents the health points
         self.mass = 10 ** 3  # mass of the animal
-        self.radius = 15  # radius of image
+        self.radius = 10  # radius of image
         self.color = 'green'
         # creates the image of an animal
 
     def move(self, delta_t):
         self.coord_x += self.velocity_x * delta_t
         self.coord_y += self.velocity_y * delta_t
-        if self.coord_x < 0:
+        if self.coord_x < self.radius:
             self.velocity_x *= -1
             self.coord_x += self.velocity_x * delta_t
-        if self.coord_x > length:
+        if self.coord_x > length-self.radius:
             self.velocity_x *= -1
             self.coord_x += self.velocity_x * delta_t
-        if self.coord_y < 0:
+        if self.coord_y < self.radius:
             self.velocity_y *= -1
             self.coord_x += self.velocity_x * delta_t
-        if self.coord_y > height:
+        if self.coord_y > height-self.radius:
             self.velocity_y *= -1
             self.coord_x += self.velocity_x * delta_t
         canv.coords(self.id,
