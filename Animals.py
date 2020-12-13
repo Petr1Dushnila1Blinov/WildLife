@@ -110,10 +110,11 @@ class Cattle(Animal):
             return True
 
     def update(self):
+        V = 30  # Скорость движения жертв
         self.clock.update()
         if not self.clock.is_running:
-            self.velocity_x = randint(-15, 15)
-            self.velocity_y = randint(-15, 15)
+            self.velocity_x = randint(-V, V)
+            self.velocity_y = randint(-V, V)
             self.clock.start(2)
 
 
@@ -171,7 +172,7 @@ class Predator(Animal):
         self.state = Predator.st_idle
         self.nearest_cattle = None
         self.health = 30
-        self.velocity = 20
+        self.velocity = 10  # Скорость передвижения хищников
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,

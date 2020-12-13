@@ -3,14 +3,14 @@ from Neutral_Objects import *
 from Landscape import *
 import time
 
-quant_cattle = 320
+quant_cattle = 3
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
     cattle[i].coord_x = randint(20, length - 20)
     cattle[i].coord_y = randint(20, height - 20)
 
-quant_predators = 50
+quant_predators = 5
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
