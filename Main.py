@@ -2,6 +2,7 @@ from Animals import *
 from Landscape import *
 import time
 
+
 def create_started_window():
     window = tk.Tk()
     window.title("WildLife simulator")
@@ -83,6 +84,7 @@ def main_game():
             c.coord_y = randint(20, length - 20)
         c.update()
         c.move(delta_t)
+
 
 
 while RUNNING_MATYEGO:
