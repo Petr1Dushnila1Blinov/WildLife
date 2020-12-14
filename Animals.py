@@ -45,16 +45,16 @@ class Animal:
         """
         self.coord_x += self.velocity_x * delta_t
         self.coord_y += self.velocity_y * delta_t
-        if self.coord_x < self.radius:
+        if self.coord_x <= self.radius:
             self.velocity_x *= -1
             self.coord_x += self.velocity_x * delta_t
-        if self.coord_x > length-self.radius:
+        if self.coord_x >= length-self.radius:
             self.velocity_x *= -1
             self.coord_x += self.velocity_x * delta_t
-        if self.coord_y < self.radius:
+        if self.coord_y <= self.radius:
             self.velocity_y *= -1
             self.coord_y += self.velocity_y * delta_t
-        if self.coord_y > height-self.radius:
+        if self.coord_y >= height-self.radius:
             self.velocity_y *= -1
             self.coord_y += self.velocity_y * delta_t
 

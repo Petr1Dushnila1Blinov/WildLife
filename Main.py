@@ -40,28 +40,15 @@ quant_cattle = 230
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
-    lcoord_x = randint(20, length - 20)
-    lcoord_y = randint(20, height - 20)
-    while ((x_lake - lcoord_x)/(a_axle+R))**2+((y_lake-lcoord_y)/(b_axle+R))**2 <= 2:
-        lcoord_x = randint(20, length - 20)
-        lcoord_y = randint(20, height - 20)
-    print(((x_lake - lcoord_x)/(a_axle+R))**2+((y_lake-lcoord_y)/(b_axle+R))**2)
-    cattle[i].coord_x = lcoord_x
-    cattle[i].coord_y = lcoord_y
-
+    cattle[i].coord_x = randint(20, length - 20)
+    cattle[i].coord_y = randint(20, height - 20)
 
 quant_predators = 12
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
-    lcoord_x = randint(20, length - 20)
-    lcoord_y = randint(20, height - 20)
-    while ((x_lake - lcoord_x) / (a_axle + R)) ** 2 + ((y_lake - lcoord_y) / (b_axle + R)) ** 2 <= 2:
-        lcoord_x = randint(20, length - 20)
-        lcoord_y = randint(20, height - 20)
-    print(((x_lake - lcoord_x)/(a_axle+R))**2+((y_lake-lcoord_y)/(b_axle+R))**2)
-    predators[i].coord_x = lcoord_x
-    predators[i].coord_y = lcoord_y
+    predators[i].coord_x = randint(20, length - 20)
+    predators[i].coord_y = randint(20, length - 20)
 
 
 RUNNING_MATYEGO = True
@@ -91,6 +78,10 @@ def main_game():
         p.move(delta_t)
 
     for c in cattle:  # Жизнь рогатого скота
+        for v in cattle:
+            while ((v.coord_x - x_lake) / (a_axle+0.5*R)) ** 2 + ((v.coord_y - y_lake) / (b_axle+0.5*R)) ** 2 <= 1:
+                v.coord_x = randint(20, length - 20)
+                v.coord_y = randint(20, length - 20)
         c.update()
         c.move(delta_t)
 
