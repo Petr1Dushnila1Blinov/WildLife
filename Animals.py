@@ -1,7 +1,7 @@
 import math
 global R, length, height
 R = 10
-length, height = 800,600
+length, height = 800, 600
 # from contracts import contract
 from Landscape import *
 

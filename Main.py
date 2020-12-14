@@ -1,7 +1,6 @@
 from Animals import *
 from Landscape import *
 import time
-import matplotlib.pyplot as plt
 
 def create_started_window():
     window = tk.Tk()
@@ -37,7 +36,7 @@ def create_started_window():
 global length, heigth
 length, height = 800, 600
 
-quant_cattle = 23
+quant_cattle = 230
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
@@ -58,7 +57,7 @@ current_time = time.time()
 
 
 def main_game():
-    global delta_t, current_time, cattle, predators, quant_cattle
+    global delta_t, current_time, cattle, predators
     delta_t = time.time() - current_time
     current_time = time.time()
 
@@ -72,7 +71,6 @@ def main_game():
                 r_min = r
         if p.nearest_cattle is not None:
             if p.nearest_cattle.death():
-                quant_cattle -= 1
                 cattle.remove(p.nearest_cattle)
                 del p.nearest_cattle
                 p.nearest_cattle = None
@@ -80,44 +78,11 @@ def main_game():
         p.move(delta_t)
 
     for c in cattle:  # Жизнь рогатого скота
-        for v in cattle:
-            while ((v.coord_x - x_lake) / (a_axle+0.5*R)) ** 2 + ((v.coord_y - y_lake) / (b_axle+0.5*R)) ** 2 <= 1:
-                v.coord_x = randint(20, length - 20)
-                v.coord_y = randint(20, length - 20)
+        while ((c.coord_x - x_lake) / (a_axle + 0.6 * R)) ** 2 + ((c.coord_y - y_lake) / (b_axle + 0.6 * R)) ** 2 <= 1:
+            c.coord_x = randint(20, length - 20)
+            c.coord_y = randint(20, length - 20)
         c.update()
         c.move(delta_t)
-    statistics("WildLifetest.png", delta_t)
-    print(Quant_cattle)
-    print(len(cattle))
-    print(Time)
-    print(time_live)
-
-
-Time = []
-time_live = 0
-Quant_cattle = []
-Quant_predators = []
-
-
-def statistics(file: str, delta_t):
-    """
-    :param file: filename.format
-    :param delta_t: update time
-    :return: graphics of population
-    """
-    global quant_cattle, quant_predators,\
-        Quant_cattle, Quant_predators, Time, time_live
-
-    plt.xlabel(r"$time,\ с$")
-    plt.ylabel(r"$Quantity\  of\  animals$")
-    plt.title(r"$Quantity(t)$")
-    Quant_cattle.append(quant_cattle)
-    Quant_predators.append(quant_predators)
-    time_live += delta_t
-    Time.append(time_live)
-    plt.plot(Time, Quant_cattle, 'ro', color='green', markersize=2)
-    plt.plot(Time, Quant_predators, 'ro', color='red', markersize=2)
-    plt.savefig(file)
 
 
 while RUNNING_MATYEGO:
