@@ -134,8 +134,5 @@ while RUNNING_MATYEGO:
             create_started_window()
             GO_START = False
     canv.update()
-    print_statistics("WildLifetest.png")
-
-
 
 tk.mainloop()
