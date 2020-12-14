@@ -1,6 +1,7 @@
 from Animals import *
 from Landscape import *
 import time
+import matplotlib.pyplot as plt
 
 
 def create_started_window():
@@ -84,7 +85,43 @@ def main_game():
             c.coord_y = randint(20, length - 20)
         c.update()
         c.move(delta_t)
+    write_statistics(delta_t)
 
+
+Time = []
+time_live = 0
+Quant_cattle = []
+Quant_predators = []
+
+
+def write_statistics(delta_t):
+    """
+    :param delta_t: update time
+    :return: graphics of population
+    """
+    global quant_cattle, quant_predators,\
+        Quant_cattle, Quant_predators, Time, time_live
+
+    plt.xlabel(r"$time,\ с$")
+    plt.ylabel(r"$Quantity\  of\  animals$")
+    plt.title(r"$Quantity(t)$")
+    Quant_cattle.append(quant_cattle)
+    Quant_predators.append(quant_predators)
+    time_live += delta_t
+    Time.append(time_live)
+
+
+def print_statistics(file: str):
+    """
+    :param file: filename.format
+    :return:
+    """
+    global Time, Quant_predators, Quant_cattle
+
+    plt.plot(Time, Quant_cattle, 'ro', color='green', markersize=2)
+    plt.plot(Time, Quant_predators, 'ro', color='red', markersize=2)
+    plt.savefig(file)
+    plt.show()
 
 
 while RUNNING_MATYEGO:
