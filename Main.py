@@ -3,6 +3,7 @@ from Landscape import *
 import time
 import matplotlib.pyplot as plt
 
+
 def create_started_window():
     window = tk.Tk()
     window.title("WildLife simulator")
@@ -86,11 +87,7 @@ def main_game():
                 v.coord_y = randint(20, length - 20)
         c.update()
         c.move(delta_t)
-    statistics("WildLifetest.png", delta_t)
-    print(Quant_cattle)
-    print(len(cattle))
-    print(Time)
-    print(time_live)
+    write_statistics(delta_t)
 
 
 Time = []
@@ -99,9 +96,8 @@ Quant_cattle = []
 Quant_predators = []
 
 
-def statistics(file: str, delta_t):
+def write_statistics(delta_t):
     """
-    :param file: filename.format
     :param delta_t: update time
     :return: graphics of population
     """
@@ -115,9 +111,19 @@ def statistics(file: str, delta_t):
     Quant_predators.append(quant_predators)
     time_live += delta_t
     Time.append(time_live)
+
+
+def print_statistics(file: str):
+    """
+    :param file: filename.format
+    :return:
+    """
+    global Time, Quant_predators, Quant_cattle
+
     plt.plot(Time, Quant_cattle, 'ro', color='green', markersize=2)
     plt.plot(Time, Quant_predators, 'ro', color='red', markersize=2)
     plt.savefig(file)
+    plt.show()
 
 
 while RUNNING_MATYEGO:
@@ -128,5 +134,8 @@ while RUNNING_MATYEGO:
             create_started_window()
             GO_START = False
     canv.update()
+    print_statistics("WildLifetest.png")
+
+
 
 tk.mainloop()
