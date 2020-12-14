@@ -35,7 +35,7 @@ def create_started_window():
 
 global length, heigth
 length, height = 800, 600
-quant_cattle = 12
+quant_cattle = 120
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
@@ -47,7 +47,7 @@ for i in range(quant_cattle):  # Заполняем карту жертвами
     else:
         quant_cattle += 1
 
-quant_predators = 1
+quant_predators = 25
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
@@ -85,7 +85,6 @@ def main_game():
                 p.nearest_cattle = None
         p.update()
         p.move(delta_t)
-        print('Здоровье: ', p.health, 'Голод: ', p.hunger)
 
     for c in cattle:  # Жизнь рогатого скота
         c.update()
