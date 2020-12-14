@@ -127,14 +127,15 @@ class Predator(Animal):
             return False
 
     def is_thirsty(self):
-        if self.thirst > 60:
-            self.health -= 1
-            return True
-        else:
-            return False
+        pass
+        #if self.thirst > 60:
+           # self.health -= 1
+            #return True
+        #else:
+           # return False
 
     def lake_nearby(self):
-        if (()/(a_axle+5))**2+(()/(b_axle+5))**2 < = 1:  # ТЕХНИЧЕСКИЕ РАБОТЫ
+        pass #if (()/(a_axle+5))**2+(()/(b_axle+5))**2 < = 1:  # ТЕХНИЧЕСКИЕ РАБОТЫ
 
 
 
