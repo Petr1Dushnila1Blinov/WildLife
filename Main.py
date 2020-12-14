@@ -35,29 +35,33 @@ def create_started_window():
 
 global length, heigth
 length, height = 800, 600
-quant_cattle = 120
+
+quant_cattle = 230
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
     lcoord_x = randint(20, length - 20)
     lcoord_y = randint(20, height - 20)
-    if ((x_lake - lcoord_x)/(a_axle+2*R))**2+((y_lake-lcoord_y)/(b_axle+2*R))**2 > 1:
-        cattle[i].coord_x = lcoord_x
-        cattle[i].coord_y = lcoord_y
-    else:
-        quant_cattle += 1
+    while ((x_lake - lcoord_x)/(a_axle+R))**2+((y_lake-lcoord_y)/(b_axle+R))**2 <= 2:
+        lcoord_x = randint(20, length - 20)
+        lcoord_y = randint(20, height - 20)
+    print(((x_lake - lcoord_x)/(a_axle+R))**2+((y_lake-lcoord_y)/(b_axle+R))**2)
+    cattle[i].coord_x = lcoord_x
+    cattle[i].coord_y = lcoord_y
 
-quant_predators = 25
+
+quant_predators = 12
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
     lcoord_x = randint(20, length - 20)
     lcoord_y = randint(20, height - 20)
-    if ((x_lake - lcoord_x) / (a_axle + 2*R)) ** 2 + ((y_lake - lcoord_y) / (b_axle + 2*R)) ** 2 > 1:
-        predators[i].coord_x = lcoord_x
-        predators[i].coord_y = lcoord_y
-    else:
-        quant_predators += 1
+    while ((x_lake - lcoord_x) / (a_axle + R)) ** 2 + ((y_lake - lcoord_y) / (b_axle + R)) ** 2 <= 2:
+        lcoord_x = randint(20, length - 20)
+        lcoord_y = randint(20, height - 20)
+    print(((x_lake - lcoord_x)/(a_axle+R))**2+((y_lake-lcoord_y)/(b_axle+R))**2)
+    predators[i].coord_x = lcoord_x
+    predators[i].coord_y = lcoord_y
 
 
 RUNNING_MATYEGO = True

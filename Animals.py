@@ -27,8 +27,8 @@ class Clock:
 
 class Animal:
     def __init__(self):
-        self.coord_x = 20  # x coordinate
-        self.coord_y = 20  # y coordinate
+        self.coord_x = -10  # x coordinate
+        self.coord_y = -10  # y coordinate
         self.velocity_x = 0  # speed x-axis
         self.velocity_y = 0  # speed y-axis
         self.hunger = 0  # represents how hungry the animal is
