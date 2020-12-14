@@ -37,14 +37,14 @@ def create_started_window():
 global length, heigth
 length, height = 800, 600
 
-quant_cattle = 230
+quant_cattle = 1
 cattle = [0] * quant_cattle
 for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
     cattle[i].coord_x = randint(20, length - 20)
     cattle[i].coord_y = randint(20, height - 20)
 
-quant_predators = 12
+quant_predators = 1
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()

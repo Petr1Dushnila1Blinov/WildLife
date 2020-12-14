@@ -137,7 +137,7 @@ class Predator(Animal):
 
 
     def state_machine(self):
-        if (self.health < 0) or (self.hunger > 5000):
+        if (self.health < 0) or (self.hunger > 100000):
             self.state = Predator.st_dead
         else:
             if self.state == Predator.st_idle and self.notice_cattle():
@@ -180,8 +180,8 @@ class Predator(Animal):
                 self.velocity_x = self.velocity * math.cos(varphi)
                 self.velocity_y = self.velocity * math.sin(varphi)
                 self.clock.start(2)
-                self.hunger += 10
-                self.thirst += 10
+                self.hunger += 1000
+                self.thirst += 1000
 
             if self.state == Predator.st_chase:
                 d_x = (- self.coord_x + self.nearest_cattle.coord_x)
@@ -189,12 +189,13 @@ class Predator(Animal):
                 r = math.sqrt(d_x ** 2 + d_y ** 2)
                 if r < self.radius:
                     self.nearest_cattle.health -= 10
-                    self.hunger -= 500
+                    self.hunger -= 1500
                     self.thirst += 20
                 if r > 0:
                     self.velocity_x = self.velocity * d_x / r
                     self.velocity_y = self.velocity * d_y / r
-                    self.hunger += 1
+                    self.hunger += 2
+                    self.thirst += 2
 
     #def obj_force(self, obj):
         #return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
