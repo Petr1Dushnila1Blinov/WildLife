@@ -1,5 +1,4 @@
 from Animals import *
-from Neutral_Objects import *
 from Landscape import *
 import time
 
@@ -21,7 +20,7 @@ def create_started_window():
             btn['fg'] = "red"
             btn['text'] = "Приостановить показ симмуляции"
             GO_MAIN = True
-    btn = tk.Button(window, text="Начть симмуляцию", command = game_started)
+    btn = tk.Button(window, text="Начать симмуляцию", command = game_started)
     btn.grid(column=0, row=2)
     k_predator = tk.DoubleVar()
     lbl_predator = tk.Label(window, text="Кол-во Хищников", font=("Arial Bold", 14))
@@ -42,19 +41,19 @@ for i in range(quant_cattle):  # Заполняем карту жертвами
     cattle[i] = Cattle()
     lcoord_x = randint(20, length - 20)
     lcoord_y = randint(20, height - 20)
-    if ((x_lake - lcoord_x)/(a_axle+R))**2+((y_lake-lcoord_y)/(b_axle+R))**2 > 1:
+    if ((x_lake - lcoord_x)/(a_axle+2*R))**2+((y_lake-lcoord_y)/(b_axle+2*R))**2 > 1:
         cattle[i].coord_x = lcoord_x
         cattle[i].coord_y = lcoord_y
     else:
         quant_cattle += 1
 
-quant_predators = 3
+quant_predators = 1
 predators = [0] * quant_predators
 for i in range(quant_predators):  # Заполняем карту хищниками
     predators[i] = Predator()
     lcoord_x = randint(20, length - 20)
     lcoord_y = randint(20, height - 20)
-    if ((x_lake - lcoord_x) / (a_axle + R)) ** 2 + ((y_lake - lcoord_y) / (b_axle + R)) ** 2 > 1:
+    if ((x_lake - lcoord_x) / (a_axle + 2*R)) ** 2 + ((y_lake - lcoord_y) / (b_axle + 2*R)) ** 2 > 1:
         predators[i].coord_x = lcoord_x
         predators[i].coord_y = lcoord_y
     else:
@@ -86,6 +85,7 @@ def main_game():
                 p.nearest_cattle = None
         p.update()
         p.move(delta_t)
+        print('Здоровье: ', p.health, 'Голод: ', p.hunger)
 
     for c in cattle:  # Жизнь рогатого скота
         c.update()

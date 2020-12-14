@@ -128,11 +128,6 @@ class Predator(Animal):
 
     def is_thirsty(self):
         pass
-        #if self.thirst > 60:
-           # self.health -= 1
-            #return True
-        #else:
-           # return False
 
     def lake_nearby(self):
         pass #if (()/(a_axle+5))**2+(()/(b_axle+5))**2 < = 1:  # ТЕХНИЧЕСКИЕ РАБОТЫ
@@ -142,7 +137,7 @@ class Predator(Animal):
 
 
     def state_machine(self):
-        if (self.health < 0) or (self.hunger > 40):
+        if (self.health < 0) or (self.hunger > 5000):
             self.state = Predator.st_dead
         else:
             if self.state == Predator.st_idle and self.notice_cattle():
@@ -194,11 +189,12 @@ class Predator(Animal):
                 r = math.sqrt(d_x ** 2 + d_y ** 2)
                 if r < self.radius:
                     self.nearest_cattle.health -= 10
-                    self.hunger -= 50
+                    self.hunger -= 500
                     self.thirst += 20
                 if r > 0:
                     self.velocity_x = self.velocity * d_x / r
                     self.velocity_y = self.velocity * d_y / r
+                    self.hunger += 1
 
     #def obj_force(self, obj):
         #return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)

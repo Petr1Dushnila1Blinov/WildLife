@@ -31,7 +31,7 @@ def create_started_window():
             btn['fg'] = "red"
             btn['text'] = "Приостановить показ симмуляции"
             GO_MAIN = True
-    btn = tk.Button(window, text="Начть симмуляцию", command = game_started)
+    btn = tk.Button(window, text="Начать симмуляцию", command = game_started)
     btn.grid(column=0, row=2)
     k_predator = tk.DoubleVar()
     lbl_predator = tk.Label(window, text="Кол-во Хищников", font=("Arial Bold", 14))
