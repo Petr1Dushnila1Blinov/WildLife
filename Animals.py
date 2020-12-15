@@ -252,4 +252,4 @@ class Predator(Animal):
                 self.velocity_y = 0
                 self.clock.start(2)
                 self.thirst -= 80
-                self.health += 50\
+                self.health += 50
