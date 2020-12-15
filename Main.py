@@ -94,9 +94,10 @@ def main_game():
     current_time = time.time()
 
     for p in predators:  # predators action
-        while ((p.coord_x - x_lake) / (a_axle + 0.3 * R)) ** 2 + ((p.coord_y - y_lake) / (b_axle + 0.3 * R)) ** 2 <= 1:
-            p.coord_x = randint(20, length - 20)
-            p.coord_y = randint(20, height - 20)
+        if p.state == 0:
+            while ((p.coord_x - x_lake) / (a_axle + 0.5 * R)) ** 2 + ((p.coord_y - y_lake) / (b_axle + 0.5 * R)) ** 2 <= 1:
+                p.coord_x = randint(20, length - 20)
+                p.coord_y = randint(20, height - 20)
         r_min = 1000000000
         p.nearest_cattle = None
         for c in cattle:
@@ -110,6 +111,7 @@ def main_game():
                 quant_cattle -= 1
                 del p.nearest_cattle
                 p.nearest_cattle = None
+        print('Здоровье: ', p.health, 'Жажда: ', p.thirst, 'Голод: ', p.hunger)
         p.update()
         p.move(delta_t)
 

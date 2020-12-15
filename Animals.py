@@ -82,10 +82,18 @@ class Animal:
 
 # needed parameters for cattle
 class Cattle(Animal):
+    st_idle = 0  # wandering around state
+    st_runaway = 1  # run_away from predator
+    st_thirst = 2  # thirsty state
+    st_drink = 3  # drinking state
+    st_dead = 4  # dead state
+
     def __init__(self):
         Animal.__init__(self)
         self.anxiety = 0  # represents how anxious the animal is
         self.mass = 10 ** 3  # mass of the animal
+        self.state = Cattle.st_idle
+        self.velocity = 45  # cattle basic speed
         self.color = 'green'
         self.notice_radius = 60  # radius where cattle notices objects
         self.id = canv.create_oval(self.coord_x - self.radius,
@@ -100,14 +108,41 @@ class Cattle(Animal):
             canv.delete(self.id)
             return True
 
-    def update(self):
-        V = 50  # cattle basic speed
-        self.clock.update()
-        if not self.clock.is_running:
-            self.velocity_x = randint(-V, V)
-            self.velocity_y = randint(-V, V)
-            self.clock.start(2)
+    def notice_predator(self):
+        pass
 
+    def is_thirsty(self):
+        pass
+
+    def lake_nearby(self):
+        pass
+
+    def state_machine(self):
+        if (self.health < 0) or (self.hunger > 100000):
+            self.state = Cattle.st_dead
+        else:
+            if self.state == Cattle.st_idle and self.notice_predator():
+                self.state = Cattle.st_runaway
+            if self.state == Cattle.st_runaway and not self.notice_predator():
+                self.state = Cattle.st_idle
+            if self.state == Cattle.st_idle and self.is_thirsty():
+                self.state = Cattle.st_thirst
+            if self.state == Cattle.st_thirst and self.lake_nearby():
+                self.state = Cattle.st_drink
+            if not self.is_thirsty() and self.state >= Cattle.st_thirst:
+                self.state = Predator.st_idle
+
+    def update(self):
+        self.state_machine()
+        self.clock.update()
+        if self.state == Cattle.st_dead:
+            self.death()
+        else:
+            if self.state == Cattle.st_idle and not self.clock.is_running:
+                varphi = randint(-180, 180)
+                self.velocity_x = self.velocity * math.cos(varphi)
+                self.velocity_y = self.velocity * math.sin(varphi)
+                self.clock.start(2)
 
 class Predator(Animal):
     st_idle = 0  # wandering around state
@@ -213,10 +248,11 @@ class Predator(Animal):
                 r = math.sqrt(d_x ** 2 + d_y ** 2)
                 self.velocity_x = self.velocity * d_x / r
                 self.velocity_y = self.velocity * d_y / r
+                self.hunger += 3
 
             if self.state == Predator.st_drink:
                 self.velocity_x = 0
                 self.velocity_y = 0
                 self.clock.start(2)
                 self.thirst -= 80
-                self.health = 40000
+                self.health += 50
