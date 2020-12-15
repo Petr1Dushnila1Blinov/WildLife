@@ -34,7 +34,7 @@ class Animal:
         self.velocity_x = 0  # speed x-axis
         self.velocity_y = 0  # speed y-axis
         self.hunger = 0  # represents how hungry the animal is
-        self.thirst = 0  # represents how thirsty the animal is
+        self.thirst = randint(0,30000)  # represents how thirsty the animal is
         self.health = 10000  # represents the health points
         self.mass = 10 ** 3  # mass of the animal
         self.radius = R  # radius of image
@@ -223,7 +223,7 @@ class Predator(Animal):
                 self.velocity_x = self.velocity * math.cos(varphi)
                 self.velocity_y = self.velocity * math.sin(varphi)
                 self.clock.start(2)
-                self.hunger += 1000
+                self.hunger += 10000
                 self.thirst += 2000
 
             if self.state == Predator.st_chase:
