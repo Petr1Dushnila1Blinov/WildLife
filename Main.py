@@ -98,6 +98,9 @@ def main_game():
             while ((p.coord_x - x_lake) / (a_axle + 0.5 * R)) ** 2 + ((p.coord_y - y_lake) / (b_axle + 0.5 * R)) ** 2 <= 1:
                 p.coord_x = randint(20, length - 20)
                 p.coord_y = randint(20, height - 20)
+        if p.state == 4:
+            predators.remove(p)
+            quant_predators -= 1
         r_min = 1000000000
         p.nearest_cattle = None
         for c in cattle:
