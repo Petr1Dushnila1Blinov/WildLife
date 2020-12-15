@@ -85,8 +85,9 @@ class Cattle(Animal):
         self.clock = Clock()
 
     def death(self):
-        canv.delete(self.id)
-        return True
+        if self.health < 0:
+            canv.delete(self.id)
+            return True
 
     def notice_predator(self):
         if self.nearest_predator == None:

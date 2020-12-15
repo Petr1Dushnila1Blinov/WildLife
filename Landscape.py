@@ -50,9 +50,10 @@ def draw_grass(x, y, size, color):
 
 
 class Grass:
-    st_dead = 0
-    st_growing = 1
-    global Ripe, Rotten, Dead
+    st_growing = 0
+    st_ripe = 1
+    st_rotten = 2
+    st_dead = 3
     Ripe = 10
     Rotten = 17
     Dead = 25
@@ -60,6 +61,7 @@ class Grass:
         self.coord_x = -10  # x coordinate
         self.coord_y = -10  # y coordinate
         self.age = 0  # возраст куска травы
+        self.state = st_growing
         self.color = Light_green  # цвет куска травы, зависит от возраста
         self.health = 100  # прочность травы, в общем то, требуемое время на её поедание
         self.saturability = 100  # насыщаемость, как сильно животное наедается куском травы
@@ -80,10 +82,16 @@ class Grass:
     #def being_eaten(self):
 
     def state_machine(self):
-        if (self.health < 0) or self.age >= Dead:
+        if (self.health < 0) or self.age >= Grass.Dead:
             self.state = Grass.st_dead
         else:
-            self.state = Grass.st_growing
+            if self.age < Grass.Ripe:
+                self.state = Grass.st_growing
+            if Grass.Ripe <= self.age < Grass.Rotten:
+                self.state = Grass.st_ripe
+            if self.age >= Grass.Rotten:
+                self.state = Grass.st_rotten
+
 
     def update(self):
         self.state_machine()
@@ -91,16 +99,16 @@ class Grass:
         if self.state == Grass.st_dead:
             self.eaten()
         else:
-            if self.age < Ripe:
+            if self.state == Grass.st_growing:
                 self.clock.start(5)
                 self.color = Light_green
                 self.age += 1
-            elif Ripe <= self.age < Rotten:
+            elif self.state == Grass.st_ripe:
                 self.saturability -= (self.age - Rotten)*10
                 self.color = Ripe_green
                 self.clock.start(5)
                 self.age += 1
-            elif self.age >= Rotten:
+            elif self.state == Grass.st_rotten:
                 self.saturability -= (self.age - Rotten)
                 self.color = Rotten_green
                 self.clock.start(5)
