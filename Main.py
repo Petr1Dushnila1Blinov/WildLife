@@ -6,13 +6,14 @@ import matplotlib.pyplot as plt
 
 # creates control window
 def create_started_window():
+    # creates main menu 300X300
     window = tk.Tk()
     window.title("WildLife simulator")
     window.geometry('300x300')
     lbl = tk.Label(window, text="   Welcome to WildLife simulator", font=("Arial Bold", 14))
     lbl.grid(column=0, row=0)
     global GO_MAIN, scale_predator, scale_animal
-
+    # changes the state of inscription
     def game_started():
         global GO_MAIN
         if GO_MAIN:
@@ -80,12 +81,15 @@ DETERMINED = False
 current_time = time.time()
 
 
+# head function
 def main_game():
     global delta_t, current_time, cattle, predators, DETERMINED, quant_cattle, quant_predators
+    # if still works
     if not DETERMINED:
         determine_quantities_animals()
         DETERMINED = True
 
+    # period of update
     delta_t = time.time() - current_time
     current_time = time.time()
 
@@ -93,11 +97,11 @@ def main_game():
         r_min = 1000000000
         p.nearest_cattle = None
         for c in cattle:
-            r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5
+            r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
             if r <= r_min:
-                p.nearest_cattle = c
+                p.nearest_cattle = c  # defines nearest cattle
                 r_min = r
-        if p.nearest_cattle is not None:
+        if p.nearest_cattle is not None:  # if it could define a particular cattle next to predator
             if p.nearest_cattle.death():
                 cattle.remove(p.nearest_cattle)
                 quant_cattle -= 1
@@ -107,12 +111,13 @@ def main_game():
         p.move(delta_t)
 
     for c in cattle:  # Жизнь рогатого скота
+        # not to enter the lake
         while ((c.coord_x - x_lake) / (a_axle + 0.6 * R)) ** 2 + ((c.coord_y - y_lake) / (b_axle + 0.6 * R)) ** 2 <= 1:
             c.coord_x = randint(20, length - 20)
             c.coord_y = randint(20, height - 20)
         c.update()
         c.move(delta_t)
-    write_statistics(delta_t)
+    write_statistics(delta_t)  # writes quantity and time in massives below
 
 
 Time = []
@@ -121,6 +126,7 @@ Quant_cattle = []
 Quant_predators = []
 
 
+# remembers statistics to print it further(uses matplotlib)
 def write_statistics(delta_t):
     """
     :param delta_t: update time
@@ -137,19 +143,21 @@ def write_statistics(delta_t):
     Time.append(time_live)
 
 
+# shows graphics after simulation
 def print_statistics(file: str):
     """
     :param file: filename.format
     :return: graphics of population
     """
     global Time, Quant_predators, Quant_cattle
-
-    plt.plot(Time, Quant_cattle, 'ro', color='green', markersize=2)
-    plt.plot(Time, Quant_predators, 'ro', color='red', markersize=2)
+    plt.plot(Time, Quant_cattle, 'ro', color='green', markersize=2, label='Травоядные')
+    plt.plot(Time, Quant_predators, 'ro', color='red', markersize=2, label='Хищники')
+    plt.legend(loc='upper right', fontsize=8)
     plt.savefig(file)
     plt.show()
 
 
+# mainloop
 while RUNNING_MATYEGO:
     if GO_MAIN:
         main_game()
