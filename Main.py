@@ -1,5 +1,6 @@
 from Animals import *
 from Landscape import *
+from Clock import *
 import time
 import matplotlib.pyplot as plt
 
@@ -12,7 +13,7 @@ def create_started_window():
     window.geometry('300x300')
     lbl = tk.Label(window, text="   Welcome to WildLife simulator", font=("Arial Bold", 14))
     lbl.grid(column=0, row=0)
-    global GO_MAIN, scale_predator, scale_animal
+    global GO_MAIN, scale_predator, scale_animal, scale_grass
 
     # changes the state of inscription
     def game_started():
@@ -41,7 +42,7 @@ def create_started_window():
 
     # creates buttons for different aims
     btn_end = tk.Button(window, text="Finish Simulation", command=game_ended)
-    btn_end.grid(column=0, row=7)
+    btn_end.grid(column=0, row=9)
     lbl_predator = tk.Label(window, text="Predators Quantity", font=("Arial Bold", 14))
     lbl_predator.grid(column=0, row=3)
     scale_predator = tk.Scale(window, orient=tk.HORIZONTAL)
@@ -50,6 +51,10 @@ def create_started_window():
     lbl_animal.grid(column=0, row=5)
     scale_animal = tk.Scale(window, orient=tk.HORIZONTAL)
     scale_animal.grid(column=0, row=6)
+    lbl_grass = tk.Label(window, text="Grass Scale", font=("Arial Bold", 14))
+    lbl_grass.grid(column=0, row=7)
+    scale_grass = tk.Scale(window, orient=tk.HORIZONTAL)
+    scale_grass.grid(column=0, row=8)
 
 
 global length, heigth
@@ -73,6 +78,16 @@ def determine_quantities_animals():
         predators[i].coord_x = randint(20, length - 20)
         predators[i].coord_y = randint(20, height - 20)
 
+def determine_grass():
+    global quant_grass, grass
+    quant_grass = 1 * int(scale_grass.get())  # takes quantity of growing grass from SCALE in main menu
+    grass = [0] * quant_grass
+    for i in range(quant_grass):  # filling map with cattle
+        grass[i] = Cattle()
+        grass[i].coord_x = randint(20, length - 20)
+        grass[i].coord_y = randint(20, height - 20)
+
+
 
 RUNNING_MATYEGO = True
 GO_START = True
@@ -87,6 +102,7 @@ def main_game():
     # if still works
     if not DETERMINED:
         determine_quantities_animals()
+        determine_grass()
         DETERMINED = True
 
     # period of update
@@ -139,6 +155,10 @@ def main_game():
                 r_min = r
         c.update()
         c.move(delta_t)
+
+    for g in grass:
+        g.update()
+
     write_statistics(delta_t)  # writes quantity and time in massives below
 
 

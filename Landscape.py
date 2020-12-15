@@ -100,18 +100,18 @@ class Grass:
             self.eaten()
         else:
             if self.state == Grass.st_growing:
-                self.clock.start(5)
+                self.clock.start(100)
                 self.color = Light_green
                 self.age += 1
             elif self.state == Grass.st_ripe:
                 self.saturability -= (self.age - Rotten)*10
                 self.color = Ripe_green
-                self.clock.start(5)
+                self.clock.start(100)
                 self.age += 1
             elif self.state == Grass.st_rotten:
                 self.saturability -= (self.age - Rotten)
                 self.color = Rotten_green
-                self.clock.start(5)
+                self.clock.start(100)
                 self.age += 1
 
 
