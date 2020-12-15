@@ -266,5 +266,4 @@ class Predator(Animal):
                     self.velocity_x = self.velocity * d_x / r
                     self.velocity_y = self.velocity * d_y / r
 
-    def obj_force(self, obj):
-        return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
+

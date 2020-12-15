@@ -122,12 +122,26 @@ class Predator(Animal):
     def notice_cattle(self):
         if self.nearest_cattle == None:
             return False
-        r = math.sqrt((self.nearest_cattle.coord_x - self.coord_x) ** 2 +
-                      (self.nearest_cattle.coord_y - self.coord_y) ** 2)
-        if r <= self.notice_radius:
-            return True
         else:
+            r = math.sqrt((self.nearest_cattle.coord_x - self.coord_x) ** 2 +
+                          (self.nearest_cattle.coord_y - self.coord_y) ** 2)
+            if r <= self.notice_radius:
+                return True
+            else:
+                return False
+
+    # Identifies predators in critical proximity
+    def notice_predator(self):
+        if self.nearest_predator == None:
             return False
+        else:
+            r = math.sqrt((self.nearest_predator.coord_x - self.coord_x) ** 2 +
+                          (self.nearest_predator.coord_y - self.coord_y) ** 2)
+            if r <= 3 * self.radius:
+                return True
+            else:
+                return False
+
 
     def is_thirsty(self):
         if (self.thirst > 50000 and self.state != 3) or (self.thirst > -50000 and self.state == 3):
@@ -167,6 +181,7 @@ class Predator(Animal):
         self.notice_radius = 300  # radius where predator notices objects
         self.state = Predator.st_idle  # basic state is wandering around
         self.nearest_cattle = None
+        self.nearest_predator = None
         self.health = 40000
         self.velocity = 50  # predator basic speed
         self.id = canv.create_oval(self.coord_x - self.radius,
@@ -217,3 +232,14 @@ class Predator(Animal):
                 self.clock.start(2)
                 self.thirst -= 80
                 self.health = 40000
+
+            if self.notice_predator() is True:
+                d_x = (- self.coord_x + self.nearest_predator.coord_x)
+                d_y = (- self.coord_y + self.nearest_predator.coord_y)
+                r = math.sqrt(d_x ** 2 + d_y ** 2)
+                self.velocity_x = -self.velocity * d_x / r
+                self.velocity_y = -self.velocity * d_y / r
+                self.hunger += 2
+                self.thirst += 2
+
+

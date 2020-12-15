@@ -99,6 +99,7 @@ def main_game():
             p.coord_y = randint(20, height - 20)
         r_min = 1000000000
         p.nearest_cattle = None
+        p.nearest_predator = None
         for c in cattle:
             r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
             if r <= r_min:
@@ -110,6 +111,14 @@ def main_game():
                 quant_cattle -= 1
                 del p.nearest_cattle
                 p.nearest_cattle = None
+        for k in predators:
+            if p == k:
+                pass
+            else:
+                r = ((p.coord_x - k.coord_x) ** 2 + (p.coord_y - k.coord_y) ** 2) ** 0.5  # distance from predator
+                if r <= r_min:                                                            # to predator
+                    p.nearest_predator = k  # defines nearest cattle
+                    r_min = r
         p.update()
         p.move(delta_t)
 
