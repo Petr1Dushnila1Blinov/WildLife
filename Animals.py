@@ -167,7 +167,7 @@ class Predator(Animal):
 
     # Identifies predators in critical proximity
     def notice_predator(self):
-        if self.nearest_predator == None:
+        if self.nearest_predator is None or self.nearest_predator.is_thirsty() is True:
             return False
         else:
             r = math.sqrt((self.nearest_predator.coord_x - self.coord_x) ** 2 +
