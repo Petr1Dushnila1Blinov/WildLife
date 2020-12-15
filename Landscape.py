@@ -1,6 +1,6 @@
 from random import *
 import tkinter as tk
-from Animals import Clock
+from Clock import *
 
 root = tk.Tk()
 fr = tk.Frame(root)
@@ -77,6 +77,8 @@ class Grass:
         else:
             return False
 
+    #def being_eaten(self):
+
     def state_machine(self):
         if (self.health < 0) or self.age >= Dead:
             self.state = Grass.st_dead
@@ -94,7 +96,7 @@ class Grass:
                 self.color = Light_green
                 self.age += 1
             elif Ripe <= self.age < Rotten:
-                self.saturability -= (self.age-Rotten)*10
+                self.saturability -= (self.age - Rotten)*10
                 self.color = Ripe_green
                 self.clock.start(5)
                 self.age += 1
