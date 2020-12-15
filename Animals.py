@@ -130,14 +130,17 @@ class Predator(Animal):
             return False
 
     def is_thirsty(self):
-        if self.thirst > 50000:
+        if (self.thirst > 50000 and self.state != 3) or (self.thirst > -50000 and self.state == 3):
             self.health -= 1
             return True
         else:
             return False
 
     def lake_nearby(self):
-        pass #if (()/(a_axle+5))**2+(()/(b_axle+5))**2 < = 1:  # ТЕХНИЧЕСКИЕ РАБОТЫ
+        if ((self.coord_x - x_lake)/(a_axle+R))**2+((self.coord_y - y_lake)/(b_axle+R))**2 <= 1:
+            return True
+        else:
+            return False
 
     # controls and changes states
     def state_machine(self):
@@ -186,7 +189,7 @@ class Predator(Animal):
                 self.velocity_y = self.velocity * math.sin(varphi)
                 self.clock.start(2)
                 self.hunger += 1000
-                self.thirst += 1000
+                self.thirst += 2000
 
             if self.state == Predator.st_chase:
                 d_x = (- self.coord_x + self.nearest_cattle.coord_x)
@@ -201,6 +204,19 @@ class Predator(Animal):
                     self.velocity_y = self.velocity * d_y / r
                     self.hunger += 2
                     self.thirst += 2
+            if self.state == Predator.st_thirst:
+                d_x = (- self.coord_x + x_lake)
+                d_y = (- self.coord_y + y_lake)
+                r = math.sqrt(d_x ** 2 + d_y ** 2)
+                self.velocity_x = self.velocity * d_x / r
+                self.velocity_y = self.velocity * d_y / r
+
+            if self.state == Predator.st_drink:
+                self.velocity_x = 0
+                self.velocity_y = 0
+                self.clock.start(2)
+                self.thirst -= 80
+                self.health = 40000
 
     #def obj_force(self, obj):
         #return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
