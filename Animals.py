@@ -164,7 +164,7 @@ class Predator(Animal):
         self.notice_radius = 300  # Радиус зрения хищника
         self.state = Predator.st_idle  # basic state is wandering around
         self.nearest_cattle = None
-        self.health = 30
+        self.health = 40000
         self.velocity = 50  # Скорость передвижения хищников
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
@@ -195,7 +195,7 @@ class Predator(Animal):
                 if r < self.radius:
                     self.nearest_cattle.health -= 500
                     self.hunger -= 1500
-                    self.thirst += 20
+                    self.thirst += 200
                 if r > 0:
                     self.velocity_x = self.velocity * d_x / r
                     self.velocity_y = self.velocity * d_y / r
