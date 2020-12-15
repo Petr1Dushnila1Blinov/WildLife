@@ -90,7 +90,8 @@ class Cattle(Animal):
         self.anxiety = 0  # represents how anxious the animal is
         self.mass = 10 ** 3  # mass of the animal
         self.state = Cattle.st_idle
-        self.velocity = 45  # cattle basic speed
+        self.nearest_predator = None
+        self.velocity = 35  # cattle basic speed
         self.color = 'green'
         self.notice_radius = 60  # radius where cattle notices objects
         self.id = canv.create_oval(self.coord_x - self.radius,
@@ -106,13 +107,28 @@ class Cattle(Animal):
             return True
 
     def notice_predator(self):
-        pass
+        if self.nearest_predator == None:
+            return False
+        else:
+            r = math.sqrt((self.nearest_predator.coord_x - self.coord_x) ** 2 +
+                          (self.nearest_predator.coord_y - self.coord_y) ** 2)
+            if r <= self.notice_radius:
+                return True
+            else:
+                return False
 
     def is_thirsty(self):
-        pass
+        if (self.thirst > 50000 and self.state != 3) or (self.thirst > -50000 and self.state == 3):
+            self.health -= 1
+            return True
+        else:
+            return False
 
     def lake_nearby(self):
-        pass
+        if ((self.coord_x - x_lake) / (a_axle + R)) ** 2 + ((self.coord_y - y_lake) / (b_axle + R)) ** 2 <= 1:
+            return True
+        else:
+            return False
 
     def state_machine(self):
         if (self.health < 0) or (self.hunger > 100000):
@@ -140,6 +156,30 @@ class Cattle(Animal):
                 self.velocity_x = self.velocity * math.cos(varphi)
                 self.velocity_y = self.velocity * math.sin(varphi)
                 self.clock.start(2)
+                self.thirst += 2000
+
+        if self.state == Cattle.st_runaway:
+            d_x = (- self.coord_x + self.nearest_predator.coord_x)
+            d_y = (- self.coord_y + self.nearest_predator.coord_y)
+            r = math.sqrt(d_x ** 2 + d_y ** 2)
+            self.velocity_x = -self.velocity * d_x / r
+            self.velocity_y = -self.velocity * d_y / r
+            self.thirst += 2
+
+        if self.state == Cattle.st_thirst:
+            d_x = (- self.coord_x + x_lake)
+            d_y = (- self.coord_y + y_lake)
+            r = math.sqrt(d_x ** 2 + d_y ** 2)
+            self.velocity_x = self.velocity * d_x / r
+            self.velocity_y = self.velocity * d_y / r
+            self.hunger += 3
+
+        if self.state == Cattle.st_drink:
+            self.velocity_x = 0
+            self.velocity_y = 0
+            self.clock.start(2)
+            self.thirst -= 80
+            self.health = 40000
 
 class Predator(Animal):
     st_idle = 0  # wandering around state

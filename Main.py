@@ -123,15 +123,20 @@ def main_game():
                 if r <= r_min:                                                            # to predator
                     p.nearest_predator = k  # defines nearest cattle
                     r_min = r
-        print('Здоровье: ', p.health, 'Жажда: ', p.thirst, 'Голод: ', p.hunger)
+        #print('Здоровье: ', p.health, 'Жажда: ', p.thirst, 'Голод: ', p.hunger)
         p.update()
         p.move(delta_t)
 
     for c in cattle:  # cattle life
-        # not to enter the lake
         while ((c.coord_x - x_lake) / (a_axle + 0.6 * R)) ** 2 + ((c.coord_y - y_lake) / (b_axle + 0.6 * R)) ** 2 <= 1:
             c.coord_x = randint(20, length - 20)
             c.coord_y = randint(20, height - 20)
+        r_min = 1000000000
+        for p in predators:
+            r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
+            if r <= r_min:
+                c.nearest_predator = p  # defines nearest predactor
+                r_min = r
         c.update()
         c.move(delta_t)
     write_statistics(delta_t)  # writes quantity and time in massives below
