@@ -33,7 +33,7 @@ class Animal:
         self.velocity_y = 0  # speed y-axis
         self.hunger = 0  # represents how hungry the animal is
         self.thirst = 0  # represents how thirsty the animal is
-        self.health = 100  # represents the health points
+        self.health = 10000  # represents the health points
         self.mass = 10 ** 3  # mass of the animal
         self.radius = R # radius of image
         self.color = 'green'
@@ -130,7 +130,10 @@ class Predator(Animal):
             return False
 
     def is_thirsty(self):
-        pass
+        if self.thirst > 50000:
+            return False
+        else:
+            return False
 
     def lake_nearby(self):
         pass #if (()/(a_axle+5))**2+(()/(b_axle+5))**2 < = 1:  # ТЕХНИЧЕСКИЕ РАБОТЫ
@@ -189,7 +192,7 @@ class Predator(Animal):
                 d_y = (- self.coord_y + self.nearest_cattle.coord_y)
                 r = math.sqrt(d_x ** 2 + d_y ** 2)
                 if r < self.radius:
-                    self.nearest_cattle.health -= 10
+                    self.nearest_cattle.health -= 500
                     self.hunger -= 1500
                     self.thirst += 20
                 if r > 0:
