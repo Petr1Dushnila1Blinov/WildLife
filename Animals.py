@@ -2,8 +2,8 @@ import math
 global R, length, height
 R = 10
 length, height = 800, 600
-# from contracts import contract
 from Landscape import *
+
 
 # Timer
 class Clock:
@@ -39,6 +39,7 @@ class Animal:
         self.color = 'green'
         # creates the image of an animal
 
+    # allows animals to move around
     def move(self, delta_t):
         """
         :param delta_t: update time
@@ -106,16 +107,18 @@ class Cattle(Animal):
 
 
 class Predator(Animal):
-    st_idle = 0
-    st_chase = 1
-    st_thirst = 2
-    st_drink = 3
-    st_dead = 4
+    st_idle = 0  # wandering around state
+    st_chase = 1  # chasing cattle state
+    st_thirst = 2  # thirsty state
+    st_drink = 3  # drinking state
+    st_dead = 4  # dead state
 
+    # deletes objects if dead
     def death(self):
         canv.delete(self.id)
         return True
 
+    # defines if cattle is next to the current predator
     def notice_cattle(self):
         if self.nearest_cattle == None:
             return False
@@ -132,10 +135,7 @@ class Predator(Animal):
     def lake_nearby(self):
         pass #if (()/(a_axle+5))**2+(()/(b_axle+5))**2 < = 1:  # ТЕХНИЧЕСКИЕ РАБОТЫ
 
-
-
-
-
+    # controls and changes states
     def state_machine(self):
         if (self.health < 0) or (self.hunger > 100000):
             self.state = Predator.st_dead
@@ -158,7 +158,7 @@ class Predator(Animal):
         self.color = 'red'
         self.mass = 10 ** 2
         self.notice_radius = 300  # Радиус зрения хищника
-        self.state = Predator.st_idle
+        self.state = Predator.st_idle  # basic state is wandering around
         self.nearest_cattle = None
         self.health = 30
         self.velocity = 50  # Скорость передвижения хищников
@@ -169,6 +169,7 @@ class Predator(Animal):
                                    fill=self.color)
         self.clock = Clock()
 
+    # controls moving and conditions of predators
     def update(self):
         self.state_machine()
         self.clock.update()

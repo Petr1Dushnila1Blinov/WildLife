@@ -4,6 +4,7 @@ import time
 import matplotlib.pyplot as plt
 
 
+# creates control window
 def create_started_window():
     window = tk.Tk()
     window.title("WildLife simulator")
@@ -27,6 +28,7 @@ def create_started_window():
     btn_start = tk.Button(window, text="Start simulation", command=game_started)
     btn_start.grid(column=0, row=2)
 
+    # controls if game is over
     def game_ended():
         root.destroy()
         window.destroy()
@@ -36,6 +38,7 @@ def create_started_window():
         DESTROYED = True
         print_statistics("test.png")
 
+    # creates buttons for different aims
     btn_end = tk.Button(window, text="Finish Simulation", command=game_ended)
     btn_end.grid(column=0, row=7)
     lbl_predator = tk.Label(window, text="Predators Quantity", font=("Arial Bold", 14))
@@ -52,16 +55,17 @@ global length, heigth
 length, height = 800, 600
 
 
+# function determines animals quantity
 def determine_quantities_animals():
     global quant_cattle, cattle, quant_predators, predators
-    quant_cattle = 2 * int(scale_animal.get())
+    quant_cattle = 2 * int(scale_animal.get())  # takes quantity of cattle from SCALE in main menu
     cattle = [0] * quant_cattle
     for i in range(quant_cattle):  # Заполняем карту жертвами
         cattle[i] = Cattle()
         cattle[i].coord_x = randint(20, length - 20)
         cattle[i].coord_y = randint(20, height - 20)
 
-    quant_predators = 1 * int(scale_predator.get())
+    quant_predators = 1 * int(scale_predator.get())  # takes quantity of predators from SCALE in main menu
     predators = [0] * quant_predators
     for i in range(quant_predators):  # Заполняем карту хищниками
         predators[i] = Predator()
@@ -120,7 +124,6 @@ Quant_predators = []
 def write_statistics(delta_t):
     """
     :param delta_t: update time
-    :return: graphics of population
     """
     global quant_cattle, quant_predators, \
         Quant_cattle, Quant_predators, Time, time_live
@@ -137,7 +140,7 @@ def write_statistics(delta_t):
 def print_statistics(file: str):
     """
     :param file: filename.format
-    :return:
+    :return: graphics of population
     """
     global Time, Quant_predators, Quant_cattle
 
