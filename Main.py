@@ -110,7 +110,6 @@ def main_game():
                 quant_cattle -= 1
                 del p.nearest_cattle
                 p.nearest_cattle = None
-        #print('Здоровье: ', p.health, 'Жажда: ', p.thirst)
         p.update()
         p.move(delta_t)
 
