@@ -1,15 +1,14 @@
 from Animals import *
 from Landscape import *
 import time
-
 import matplotlib.pyplot as plt
 
 
 def create_started_window():
     window = tk.Tk()
     window.title("WildLife simulator")
-    window.geometry('800x500')
-    lbl = tk.Label(window, text="Наша команда приветствет Вас в WildLife simulator", font=("Arial Bold", 14))
+    window.geometry('300x300')
+    lbl = tk.Label(window, text="   Welcome to WildLife simulator", font=("Arial Bold", 14))
     lbl.grid(column=0, row=0)
     global GO_MAIN, scale_predator, scale_animal
 
@@ -17,15 +16,15 @@ def create_started_window():
         global GO_MAIN
         if GO_MAIN:
             btn_start['fg'] = "black"
-            btn_start['text'] = "Продолжить показ симмуляции"
+            btn_start['text'] = "Keep watching"
             GO_MAIN = False
         else:
             btn_start['fg'] = "red"
-            btn_start['text'] = "Приостановить показ симмуляции"
+            btn_start['text'] = "Stop showing"
             GO_MAIN = True
             print(scale_predator.get())
 
-    btn_start = tk.Button(window, text="Начать симмуляцию", command=game_started)
+    btn_start = tk.Button(window, text="Start simulation", command=game_started)
     btn_start.grid(column=0, row=2)
 
     def game_ended():
@@ -37,16 +36,16 @@ def create_started_window():
         DESTROYED = True
         print_statistics("test.png")
 
-    btn_end = tk.Button(window, text="Закончить симмуляцию", command=game_ended)
-    btn_end.grid(column=0, row=5)
-    lbl_predator = tk.Label(window, text="Кол-во Хищников", font=("Arial Bold", 14))
+    btn_end = tk.Button(window, text="Finish Simulation", command=game_ended)
+    btn_end.grid(column=0, row=7)
+    lbl_predator = tk.Label(window, text="Predators Quantity", font=("Arial Bold", 14))
     lbl_predator.grid(column=0, row=3)
     scale_predator = tk.Scale(window, orient=tk.HORIZONTAL)
     scale_predator.grid(column=0, row=4)
-    lbl_animal = tk.Label(window, text="Кол-во Травоядных", font=("Arial Bold", 14))
-    lbl_animal.grid(column=2, row=3)
+    lbl_animal = tk.Label(window, text="Cattle Quantity", font=("Arial Bold", 14))
+    lbl_animal.grid(column=0, row=5)
     scale_animal = tk.Scale(window, orient=tk.HORIZONTAL)
-    scale_animal.grid(column=2, row=4)
+    scale_animal.grid(column=0, row=6)
 
 
 global length, heigth
@@ -78,7 +77,7 @@ current_time = time.time()
 
 
 def main_game():
-    global delta_t, current_time, cattle, predators, DETERMINED
+    global delta_t, current_time, cattle, predators, DETERMINED, quant_cattle, quant_predators
     if not DETERMINED:
         determine_quantities_animals()
         DETERMINED = True
@@ -97,6 +96,7 @@ def main_game():
         if p.nearest_cattle is not None:
             if p.nearest_cattle.death():
                 cattle.remove(p.nearest_cattle)
+                quant_cattle -= 1
                 del p.nearest_cattle
                 p.nearest_cattle = None
         p.update()
