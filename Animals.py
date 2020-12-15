@@ -131,7 +131,8 @@ class Predator(Animal):
 
     def is_thirsty(self):
         if self.thirst > 50000:
-            return False
+            self.health -= 1
+            return True
         else:
             return False
 
