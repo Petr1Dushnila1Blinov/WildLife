@@ -87,7 +87,7 @@ class Cattle(Animal):
         self.anxiety = 0  # represents how anxious the animal is
         self.mass = 10 ** 3  # mass of the animal
         self.color = 'green'
-        self.notice_radius = 60  # радиус зрения животного
+        self.notice_radius = 60  # radius where cattle notices objects
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,
@@ -101,7 +101,7 @@ class Cattle(Animal):
             return True
 
     def update(self):
-        V = 50  # Скорость движения жертв
+        V = 50  # cattle basic speed
         self.clock.update()
         if not self.clock.is_running:
             self.velocity_x = randint(-V, V)
@@ -167,11 +167,11 @@ class Predator(Animal):
         Animal.__init__(self)
         self.color = 'red'
         self.mass = 10 ** 2
-        self.notice_radius = 300  # Радиус зрения хищника
+        self.notice_radius = 300  # radius where predator notices objects
         self.state = Predator.st_idle  # basic state is wandering around
         self.nearest_cattle = None
         self.health = 40000
-        self.velocity = 50  # Скорость передвижения хищников
+        self.velocity = 50  # predator basic speed
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,

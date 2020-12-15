@@ -61,14 +61,14 @@ def determine_quantities_animals():
     global quant_cattle, cattle, quant_predators, predators
     quant_cattle = 2 * int(scale_animal.get())  # takes quantity of cattle from SCALE in main menu
     cattle = [0] * quant_cattle
-    for i in range(quant_cattle):  # Заполняем карту жертвами
+    for i in range(quant_cattle):  # filling map with cattle
         cattle[i] = Cattle()
         cattle[i].coord_x = randint(20, length - 20)
         cattle[i].coord_y = randint(20, height - 20)
 
     quant_predators = 1 * int(scale_predator.get())  # takes quantity of predators from SCALE in main menu
     predators = [0] * quant_predators
-    for i in range(quant_predators):  # Заполняем карту хищниками
+    for i in range(quant_predators):  # filling map with predators
         predators[i] = Predator()
         predators[i].coord_x = randint(20, length - 20)
         predators[i].coord_y = randint(20, height - 20)
@@ -93,7 +93,7 @@ def main_game():
     delta_t = time.time() - current_time
     current_time = time.time()
 
-    for p in predators:  # План действия хищников
+    for p in predators:  # predators action
         while ((p.coord_x - x_lake) / (a_axle + 0.3 * R)) ** 2 + ((p.coord_y - y_lake) / (b_axle + 0.3 * R)) ** 2 <= 1:
             p.coord_x = randint(20, length - 20)
             p.coord_y = randint(20, height - 20)
@@ -110,11 +110,10 @@ def main_game():
                 quant_cattle -= 1
                 del p.nearest_cattle
                 p.nearest_cattle = None
-        # print('Здоровье: ', p.health, 'Жажда: ', p.thirst)
         p.update()
         p.move(delta_t)
 
-    for c in cattle:  # Жизнь рогатого скота
+    for c in cattle:  # cattle life
         # not to enter the lake
         while ((c.coord_x - x_lake) / (a_axle + 0.6 * R)) ** 2 + ((c.coord_y - y_lake) / (b_axle + 0.6 * R)) ** 2 <= 1:
             c.coord_x = randint(20, length - 20)
