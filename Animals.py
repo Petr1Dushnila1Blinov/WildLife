@@ -193,7 +193,7 @@ class Predator(Animal):
 
     # controls and changes states
     def state_machine(self):
-        if (self.health < 0) or (self.hunger > 100000):
+        if (self.health < 0) or (self.hunger > 80000):
             self.state = Predator.st_dead
         else:
             if self.state == Predator.st_idle and self.notice_cattle():
@@ -237,7 +237,7 @@ class Predator(Animal):
                 varphi = randint(-180, 180)
                 self.velocity_x = self.velocity * math.cos(varphi)
                 self.velocity_y = self.velocity * math.sin(varphi)
-                self.clock.start(2)
+                self.clock.start(1)
                 self.hunger += 10000
                 self.thirst += 2000
 
@@ -266,7 +266,6 @@ class Predator(Animal):
                 self.velocity_x = 0
                 self.velocity_y = 0
                 self.clock.start(2)
-<<<<<<< HEAD
                 self.thirst -= 80
                 self.health = 40000
 
@@ -280,7 +279,4 @@ class Predator(Animal):
                 self.thirst += 2
 
 
-=======
-                self.thirst -= 70
-                self.health += 40
->>>>>>> 6b3693e828cf34e0655218dc188eb504f79317ad
+
