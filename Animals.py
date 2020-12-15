@@ -1,4 +1,5 @@
 import math
+import time
 
 global R, length, height
 R = 10
