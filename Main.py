@@ -13,6 +13,7 @@ def create_started_window():
     lbl = tk.Label(window, text="   Welcome to WildLife simulator", font=("Arial Bold", 14))
     lbl.grid(column=0, row=0)
     global GO_MAIN, scale_predator, scale_animal
+
     # changes the state of inscription
     def game_started():
         global GO_MAIN
@@ -24,7 +25,6 @@ def create_started_window():
             btn_start['fg'] = "red"
             btn_start['text'] = "Stop showing"
             GO_MAIN = True
-            print(scale_predator.get())
 
     btn_start = tk.Button(window, text="Start simulation", command=game_started)
     btn_start.grid(column=0, row=2)
@@ -110,7 +110,7 @@ def main_game():
                 quant_cattle -= 1
                 del p.nearest_cattle
                 p.nearest_cattle = None
-        #print('Здоровье: ', p.health, 'Жажда: ', p.thirst)
+        # print('Здоровье: ', p.health, 'Жажда: ', p.thirst)
         p.update()
         p.move(delta_t)
 
@@ -156,7 +156,7 @@ def print_statistics(file: str):
     global Time, Quant_predators, Quant_cattle
     plt.plot(Time, Quant_cattle, 'ro', color='green', markersize=2, label='Травоядные')
     plt.plot(Time, Quant_predators, 'ro', color='red', markersize=2, label='Хищники')
-    plt.legend(loc='upper right', fontsize=8)
+    plt.legend(loc='upper right', fontsize=10)
     plt.savefig(file)
     plt.show()
 
@@ -165,7 +165,6 @@ def print_statistics(file: str):
 while RUNNING_MATYEGO:
     if GO_MAIN:
         main_game()
-
     else:
         if GO_START:
             create_started_window()
