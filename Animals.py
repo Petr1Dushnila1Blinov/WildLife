@@ -102,9 +102,8 @@ class Cattle(Animal):
         self.clock = Clock()
 
     def death(self):
-        if self.health <= 0:
-            canv.delete(self.id)
-            return True
+        canv.delete(self.id)
+        return True
 
     def notice_predator(self):
         if self.nearest_predator == None:
@@ -158,28 +157,28 @@ class Cattle(Animal):
                 self.clock.start(2)
                 self.thirst += 2000
 
-        if self.state == Cattle.st_runaway:
-            d_x = (- self.coord_x + self.nearest_predator.coord_x)
-            d_y = (- self.coord_y + self.nearest_predator.coord_y)
-            r = math.sqrt(d_x ** 2 + d_y ** 2)
-            self.velocity_x = -self.velocity * d_x / r
-            self.velocity_y = -self.velocity * d_y / r
-            self.thirst += 2
+            if self.state == Cattle.st_runaway:
+                d_x = (- self.coord_x + self.nearest_predator.coord_x)
+                d_y = (- self.coord_y + self.nearest_predator.coord_y)
+                r = math.sqrt(d_x ** 2 + d_y ** 2)
+                self.velocity_x = -self.velocity * d_x / r
+                self.velocity_y = -self.velocity * d_y / r
+                self.thirst += 2
 
-        if self.state == Cattle.st_thirst:
-            d_x = (- self.coord_x + x_lake)
-            d_y = (- self.coord_y + y_lake)
-            r = math.sqrt(d_x ** 2 + d_y ** 2)
-            self.velocity_x = self.velocity * d_x / r
-            self.velocity_y = self.velocity * d_y / r
-            self.hunger += 3
+            if self.state == Cattle.st_thirst:
+                d_x = (- self.coord_x + x_lake)
+                d_y = (- self.coord_y + y_lake)
+                r = math.sqrt(d_x ** 2 + d_y ** 2)
+                self.velocity_x = self.velocity * d_x / r
+                self.velocity_y = self.velocity * d_y / r
+                self.hunger += 3
 
-        if self.state == Cattle.st_drink:
-            self.velocity_x = 0
-            self.velocity_y = 0
-            self.clock.start(2)
-            self.thirst -= 80
-            self.health = 40000
+            if self.state == Cattle.st_drink:
+                self.velocity_x = 0
+                self.velocity_y = 0
+                self.clock.start(2)
+                self.thirst -= 80
+                self.health = 40000
 
 class Predator(Animal):
     st_idle = 0  # wandering around state

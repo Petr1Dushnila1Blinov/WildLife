@@ -142,6 +142,7 @@ def main_game():
     write_statistics(delta_t)  # writes quantity and time in massives below
 
 
+
 Time = []
 time_live = 0
 Quant_cattle = []
