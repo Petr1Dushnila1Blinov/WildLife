@@ -70,7 +70,7 @@ def determine_quantities_animals():
     for i in range(quant_predators):  # Заполняем карту хищниками
         predators[i] = Predator()
         predators[i].coord_x = randint(20, length - 20)
-        predators[i].coord_y = randint(20, length - 20)
+        predators[i].coord_y = randint(20, height - 20)
 
 
 RUNNING_MATYEGO = True
@@ -109,7 +109,7 @@ def main_game():
     for c in cattle:  # Жизнь рогатого скота
         while ((c.coord_x - x_lake) / (a_axle + 0.6 * R)) ** 2 + ((c.coord_y - y_lake) / (b_axle + 0.6 * R)) ** 2 <= 1:
             c.coord_x = randint(20, length - 20)
-            c.coord_y = randint(20, length - 20)
+            c.coord_y = randint(20, height - 20)
         c.update()
         c.move(delta_t)
     write_statistics(delta_t)
