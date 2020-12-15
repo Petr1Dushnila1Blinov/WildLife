@@ -1,4 +1,6 @@
 import math
+import time
+
 global R, length, height
 R = 10
 length, height = 800, 600
@@ -35,7 +37,7 @@ class Animal:
         self.thirst = 0  # represents how thirsty the animal is
         self.health = 10000  # represents the health points
         self.mass = 10 ** 3  # mass of the animal
-        self.radius = R # radius of image
+        self.radius = R  # radius of image
         self.color = 'green'
         # creates the image of an animal
 
@@ -49,21 +51,22 @@ class Animal:
         if self.coord_x <= self.radius:
             self.velocity_x *= -1
             self.coord_x += self.velocity_x * delta_t
-        if self.coord_x >= length-self.radius:
+        if self.coord_x >= length - self.radius:
             self.velocity_x *= -1
             self.coord_x += self.velocity_x * delta_t
         if self.coord_y <= self.radius:
             self.velocity_y *= -1
             self.coord_y += self.velocity_y * delta_t
-        if self.coord_y >= height-self.radius:
+        if self.coord_y >= height - self.radius:
             self.velocity_y *= -1
             self.coord_y += self.velocity_y * delta_t
 
-        if ((x_lake - self.coord_x)/(a_axle+self.radius))**2+((y_lake-self.coord_y)/(b_axle+self.radius))**2 <= 1:
+        if ((x_lake - self.coord_x) / (a_axle + self.radius)) ** 2 + (
+                (y_lake - self.coord_y) / (b_axle + self.radius)) ** 2 <= 1:
             self.velocity_y *= -1
             self.velocity_x *= -1
-            self.coord_x += abs(random())*self.velocity_x * delta_t
-            self.coord_y += abs(random())*self.velocity_y * delta_t
+            self.coord_x += abs(random()) * self.velocity_x * delta_t
+            self.coord_y += abs(random()) * self.velocity_y * delta_t
         canv.coords(self.id,
                     self.coord_x - self.radius,
                     self.coord_y - self.radius,
@@ -84,7 +87,7 @@ class Cattle(Animal):
         self.anxiety = 0  # represents how anxious the animal is
         self.mass = 10 ** 3  # mass of the animal
         self.color = 'green'
-        self.notice_radius = 60  # радиус зрения животного
+        self.notice_radius = 60  # radius where cattle notices objects
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,
@@ -98,7 +101,7 @@ class Cattle(Animal):
             return True
 
     def update(self):
-        V = 50  # Скорость движения жертв
+        V = 50  # cattle basic speed
         self.clock.update()
         if not self.clock.is_running:
             self.velocity_x = randint(-V, V)
@@ -137,7 +140,7 @@ class Predator(Animal):
             return False
 
     def lake_nearby(self):
-        if ((self.coord_x - x_lake)/(a_axle+R))**2+((self.coord_y - y_lake)/(b_axle+R))**2 <= 1:
+        if ((self.coord_x - x_lake) / (a_axle + R)) ** 2 + ((self.coord_y - y_lake) / (b_axle + R)) ** 2 <= 1:
             return True
         else:
             return False
@@ -164,11 +167,11 @@ class Predator(Animal):
         Animal.__init__(self)
         self.color = 'red'
         self.mass = 10 ** 2
-        self.notice_radius = 300  # Радиус зрения хищника
+        self.notice_radius = 300  # radius where predator notices objects
         self.state = Predator.st_idle  # basic state is wandering around
         self.nearest_cattle = None
         self.health = 40000
-        self.velocity = 50  # Скорость передвижения хищников
+        self.velocity = 50  # predator basic speed
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,
@@ -217,6 +220,3 @@ class Predator(Animal):
                 self.clock.start(2)
                 self.thirst -= 80
                 self.health = 40000
-
-    #def obj_force(self, obj):
-        #return self.hunger * obj_force(obj, self.mass, self.coord_x, self.coord_y, obj.coord_x, obj.coord_y, obj.mass)
