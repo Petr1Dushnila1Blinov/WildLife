@@ -76,9 +76,6 @@ class Animal:
     def update(self):
         pass
 
-    def lake_force(self):
-        return self.thirst * lake_force(self.mass, self.coord_x, self.coord_y)
-
 
 # needed parameters for cattle
 class Cattle(Animal):
