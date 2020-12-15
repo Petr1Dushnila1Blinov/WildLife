@@ -10,14 +10,14 @@ root.geometry(str(length) + 'x' + str(height))
 canv = tk.Canvas(root, bg='#fb0')
 canv.create_rectangle(
     0, 0, length, height,
-    outline="lime green", fill="lime green")
+    outline="lime green", fill="brown")
 canv.pack(fill=tk.BOTH, expand=1)
 global GO_MAIN
 GO_MAIN = False
 
-Light_green = (9, 227, 31)
-Ripe_green = (19, 143, 31)
-Rotten_green = (131, 158, 57)
+Light_green = '09e31f'
+Ripe_green = '138f1f'
+Rotten_green = '839e39'
 
 
 # creates lake
