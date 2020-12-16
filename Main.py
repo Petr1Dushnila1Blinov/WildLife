@@ -98,7 +98,7 @@ current_time = time.time()
 
 # head function
 def main_game():
-    global delta_t, current_time, cattle, predators, grass, DETERMINED, quant_cattle, quant_predators, quant_grass
+    global delta_t, current_time, cattle, predators, grass, DETERMINED, quant_cattle, quant_predators, quant_fruits
     # if still works
     if not DETERMINED:
         determine_quantities_animals()
@@ -158,9 +158,10 @@ def main_game():
 
     for f in fruits:   # fruits life
         if f.state == 3:
-            grass.remove(f)
+            fruits.remove(f)
             quant_fruits -= 1
         f.update()
+
 
     write_statistics(delta_t)  # writes quantity and time in massives below
 

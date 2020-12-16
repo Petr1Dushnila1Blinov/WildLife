@@ -57,9 +57,9 @@ class Fruit:
     st_ripe = 1
     st_rotten = 2
     st_dead = 3
-    Ripe = 10
-    Rotten = 17
-    Dead = 11111115
+    Ripe = 500
+    Rotten = 1000
+    Dead = 1500
 
     def __init__(self):
         self.coord_x = -10  # x coordinate
@@ -106,22 +106,21 @@ class Fruit:
             self.eaten()
         else:
             if self.state == Fruit.st_growing:
-                self.clock.start(1)
                 self.color = Light_green
-                self.age += 1
             elif self.state == Fruit.st_ripe:
                 self.saturability -= (self.age - Fruit.Rotten) * 10
                 self.color = Ripe_green
-                self.clock.start(1)
-                self.age += 1
             elif self.state == Fruit.st_rotten:
                 self.saturability -= (self.age - Fruit.Rotten)
                 self.color = Rotten_green
-                self.clock.start(1)
-                self.age += 1
+
+            self.clock.start(0.1)
+            self.age += 1
             canv.coords(self.id,
                         self.coord_x - 2 * self.size,
                         self.coord_y - 2 * self.size,
                         self.coord_x + 2 * self.size,
                         self.coord_y + 2 * self.size,
                         )
+            canv.itemconfig(self.id,
+                            fill=self.color)
