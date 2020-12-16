@@ -212,7 +212,7 @@ class Predator(Animal):
         else:
             r = math.sqrt((self.nearest_predator.coord_x - self.coord_x) ** 2 +
                           (self.nearest_predator.coord_y - self.coord_y) ** 2)
-            if r <= 3 * self.radius:
+            if r <= int(2 * self.radius):
                 return True
             else:
                 return False
