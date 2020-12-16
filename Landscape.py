@@ -9,10 +9,11 @@ length = 800
 height = 600
 root.geometry(str(length) + 'x' + str(height))
 canv = tk.Canvas(root, bg='#fb0')
-image = Image.open("d:/Питон/Python Files/WildLife/gameground.png")
+image = Image.open("gameground.png")
 photo = ImageTk.PhotoImage(image)
 image = canv.create_image(0, 0, anchor='nw',image=photo)
 canv.pack(fill=tk.BOTH, expand=1)
+
 global GO_MAIN
 GO_MAIN = False
 
