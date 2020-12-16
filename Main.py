@@ -78,6 +78,7 @@ def determine_quantities_animals():
         predators[i].coord_x = randint(20, length - 20)
         predators[i].coord_y = randint(20, height - 20)
 
+
 def determine_fruits():
     global quant_fruits, fruits
     quant_fruits = 1 * int(scale_fruit.get())  # takes quantity of growing fruits from SCALE in main menu
@@ -88,12 +89,26 @@ def determine_fruits():
         fruits[i].coord_y = randint(20, height - 20)
 
 
-
 RUNNING_MATYEGO = True
 GO_START = True
 DESTROYED = False
 DETERMINED = False
 current_time = time.time()
+
+
+def food_generation():
+    global quant_fruits, fruits
+    old_count = len(fruits)
+    clock = Clock()
+    clock.start(0.000001)
+    quant_fruits += 1 * int(scale_fruit.get())
+    new_fruits = [0] * (quant_fruits - old_count)
+    fruits.append(new_fruits)
+    for i in range(old_count , len(fruits)):  # filling map with fruits
+        fruits[i] = Fruit()
+        fruits[i].coord_x = randint(20, length - 20)
+        fruits[i].coord_y = randint(20, height - 20)
+
 
 
 # head function
@@ -111,7 +126,8 @@ def main_game():
 
     for p in predators:  # predators action
         if p.state == 0:
-            while ((p.coord_x - x_lake) / (a_axle + 0.5 * R)) ** 2 + ((p.coord_y - y_lake) / (b_axle + 0.5 * R)) ** 2 <= 1:
+            while ((p.coord_x - x_lake) / (a_axle + 0.5 * R)) ** 2 + (
+                    (p.coord_y - y_lake) / (b_axle + 0.5 * R)) ** 2 <= 1:
                 p.coord_x = randint(20, length - 20)
                 p.coord_y = randint(20, height - 20)
         if p.state == 4:
@@ -136,10 +152,10 @@ def main_game():
                 pass
             else:
                 r = ((p.coord_x - k.coord_x) ** 2 + (p.coord_y - k.coord_y) ** 2) ** 0.5  # distance from predator
-                if r <= r_min:                                                            # to predator
+                if r <= r_min:  # to predator
                     p.nearest_predator = k  # defines nearest cattle
                     r_min = r
-        #print('Здоровье: ', p.health, 'Жажда: ', p.thirst, 'Голод: ', p.hunger)
+        # print('Здоровье: ', p.health, 'Жажда: ', p.thirst, 'Голод: ', p.hunger)
         p.update()
         p.move(delta_t)
 
@@ -156,15 +172,13 @@ def main_game():
         c.update()
         c.move(delta_t)
 
-    for f in fruits:   # fruits life
+    for f in fruits:  # fruits life
         if f.state == 3:
             fruits.remove(f)
             quant_fruits -= 1
         f.update()
-
-
+    food_generation()
     write_statistics(delta_t)  # writes quantity and time in massives below
-
 
 
 Time = []
