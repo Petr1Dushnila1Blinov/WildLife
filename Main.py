@@ -97,14 +97,12 @@ current_time = time.time()
 
 
 def food_generation():
-    global quant_fruits, fruits
+    global fruits
     old_count = len(fruits)
-    clock = Clock()
-    clock.start(100)
     quant_fruits = 1 * int(scale_fruit.get())
-    new_fruits = [0] * (quant_fruits - old_count)
-    fruits.append(new_fruits)
-    for i in range(old_count , len(fruits)):  # filling map with fruits
+    new_fruits = [0] * (quant_fruits)
+    fruits += new_fruits
+    for i in range(old_count, len(fruits)):  # filling map with fruits
         fruits[i] = Fruit()
         fruits[i].coord_x = randint(20, length - 20)
         fruits[i].coord_y = randint(20, height - 20)
@@ -179,8 +177,7 @@ def main_game():
             fruits.remove(f)
             quant_fruits -= 1
         f.update()
-    print(food_time, start_time)
-    if food_time - start_time > 1:
+    if food_time - start_time > 4:
         food_generation()
         food_time = time.time()
         start_time = time.time()
