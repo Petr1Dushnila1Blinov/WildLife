@@ -5,26 +5,9 @@ global R, length, height
 R = 10
 length, height = 800, 600
 from Landscape import *
+from Clock import *
 
 
-# Timer
-class Clock:
-    def __init__(self):
-        self.is_running = False
-        self.stop_time = 0
-
-    # makes time flowing
-    def start(self, period):
-        """
-        :param period: update time
-        """
-        self.is_running = True
-        self.stop_time = time.time() + period
-
-    # stops time flowing
-    def update(self):
-        if time.time() > self.stop_time:
-            self.is_running = False
 
 
 class Animal:
@@ -93,7 +76,7 @@ class Cattle(Animal):
         self.nearest_predator = None
         self.velocity = 35  # cattle basic speed
         self.color = 'green'
-        self.notice_radius = 60  # radius where cattle notices objects
+        self.notice_radius = 40  # radius where cattle notices objects
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,
@@ -102,7 +85,7 @@ class Cattle(Animal):
         self.clock = Clock()
 
     def death(self):
-        if self.health <= 0:
+        if self.health < 0:
             canv.delete(self.id)
             return True
 
@@ -158,28 +141,28 @@ class Cattle(Animal):
                 self.clock.start(2)
                 self.thirst += 2000
 
-        if self.state == Cattle.st_runaway:
-            d_x = (- self.coord_x + self.nearest_predator.coord_x)
-            d_y = (- self.coord_y + self.nearest_predator.coord_y)
-            r = math.sqrt(d_x ** 2 + d_y ** 2)
-            self.velocity_x = -self.velocity * d_x / r
-            self.velocity_y = -self.velocity * d_y / r
-            self.thirst += 2
+            if self.state == Cattle.st_runaway:
+                d_x = (- self.coord_x + self.nearest_predator.coord_x)
+                d_y = (- self.coord_y + self.nearest_predator.coord_y)
+                r = math.sqrt(d_x ** 2 + d_y ** 2)
+                self.velocity_x = -self.velocity * d_x / r
+                self.velocity_y = -self.velocity * d_y / r
+                self.thirst += 2
 
-        if self.state == Cattle.st_thirst:
-            d_x = (- self.coord_x + x_lake)
-            d_y = (- self.coord_y + y_lake)
-            r = math.sqrt(d_x ** 2 + d_y ** 2)
-            self.velocity_x = self.velocity * d_x / r
-            self.velocity_y = self.velocity * d_y / r
-            self.hunger += 3
+            if self.state == Cattle.st_thirst:
+                d_x = (- self.coord_x + x_lake)
+                d_y = (- self.coord_y + y_lake)
+                r = math.sqrt(d_x ** 2 + d_y ** 2)
+                self.velocity_x = self.velocity * d_x / r
+                self.velocity_y = self.velocity * d_y / r
+                self.hunger += 3
 
-        if self.state == Cattle.st_drink:
-            self.velocity_x = 0
-            self.velocity_y = 0
-            self.clock.start(2)
-            self.thirst -= 80
-            self.health = 40000
+            if self.state == Cattle.st_drink:
+                self.velocity_x = 0
+                self.velocity_y = 0
+                self.clock.start(2)
+                self.thirst -= 80
+                self.health = 40000
 
 class Predator(Animal):
     st_idle = 0  # wandering around state
@@ -207,8 +190,15 @@ class Predator(Animal):
 
     # Identifies predators in critical proximity
     def notice_predator(self):
-        if self.nearest_predator == None:
+        if self.nearest_predator is None:
             return False
+        elif self.nearest_predator.is_thirsty() is True:
+            r = math.sqrt((self.nearest_predator.coord_x - self.coord_x) ** 2 +
+                          (self.nearest_predator.coord_y - self.coord_y) ** 2)
+            if r <= 1.5 * self.radius:
+                return True
+            else:
+                return False
         else:
             r = math.sqrt((self.nearest_predator.coord_x - self.coord_x) ** 2 +
                           (self.nearest_predator.coord_y - self.coord_y) ** 2)
