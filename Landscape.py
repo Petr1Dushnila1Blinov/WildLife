@@ -11,7 +11,7 @@ root.geometry(str(length) + 'x' + str(height))
 canv = tk.Canvas(root, bg='#fb0')
 image = Image.open("gameground.png")
 photo = ImageTk.PhotoImage(image)
-image = canv.create_image(0, 0, anchor='nw',image=photo)
+image = canv.create_image(0, 0, anchor='nw', image=photo)
 canv.pack(fill=tk.BOTH, expand=1)
 
 global GO_MAIN
@@ -41,7 +41,7 @@ def lake(canv):
 
 (x_lake, y_lake, a_axle, b_axle) = lake(canv)
 
-
+'''
 def draw_grass(x, y, size, color, canv):
     canv.create_arc(x - 5 * size, y - 5 * size, x + 5 * size, y + 5 * size, start=0,
                     extent=180, fill=color, width=0.2)
@@ -49,9 +49,10 @@ def draw_grass(x, y, size, color, canv):
         for j in range(-4, 5):
             canv.create_line(x + (j / 5) * i / 10 * size, y + (i / 10) ** 2 * size,
                              x + (j / 5) * (i + 1) / 10 * size, y + ((i + 1) / 10) ** 2 * size, fill=color)
+'''
 
 
-class Grass:
+class Fruit:
     st_growing = 0
     st_ripe = 1
     st_rotten = 2
@@ -64,12 +65,14 @@ class Grass:
         self.coord_x = -10  # x coordinate
         self.coord_y = -10  # y coordinate
         self.age = 0  # возраст куска травы
-        self.state = Grass.st_growing
+        self.state = Fruit.st_growing
         self.color = Light_green  # цвет куска травы, зависит от возраста
         self.health = 100  # прочность травы, в общем то, требуемое время на её поедание
         self.saturability = 100  # насыщаемость, как сильно животное наедается куском травы
         self.size = 2  # коэф размера куска травы
-        self.id = draw_grass(self.coord_x, self.coord_y, self.size, self.color, canv)
+        self.id = canv.create_rectangle(self.coord_x - 2 * self.size, self.coord_y + 2 * self.size,
+                                        self.coord_x + 2 * self.size, self.coord_y + 2 * self.size,
+                                        fill=self.color, outline="gold")
         self.clock = Clock()
 
     def eaten(self):
@@ -77,7 +80,8 @@ class Grass:
         return True
 
     def lake_nearby(self):
-        if ((self.coord_x - x_lake) / (a_axle + R)) ** 2 + ((self.coord_y - y_lake) / (b_axle + R)) ** 2 <= 1:
+        if ((self.coord_x - x_lake) / (a_axle + 3*self.size)) ** 2 +\
+                ((self.coord_y - y_lake) / (b_axle + 3*self.size)) ** 2 <= 1:
             return True
         else:
             return False
@@ -85,33 +89,39 @@ class Grass:
     # def being_eaten(self):
 
     def state_machine(self):
-        if (self.health < 0) or self.age >= Grass.Dead:
-            self.state = Grass.st_dead
+        if (self.health < 0) or self.age >= Fruit.Dead:
+            self.state = Fruit.st_dead
         else:
-            if self.age < Grass.Ripe:
-                self.state = Grass.st_growing
-            if Grass.Ripe <= self.age < Grass.Rotten:
-                self.state = Grass.st_ripe
-            if self.age >= Grass.Rotten:
-                self.state = Grass.st_rotten
+            if self.age < Fruit.Ripe:
+                self.state = Fruit.st_growing
+            if Fruit.Ripe <= self.age < Fruit.Rotten:
+                self.state = Fruit.st_ripe
+            if self.age >= Fruit.Rotten:
+                self.state = Fruit.st_rotten
 
     def update(self):
         self.state_machine()
         self.clock.update()
-        if self.state == Grass.st_dead:
+        if self.state == Fruit.st_dead:
             self.eaten()
         else:
-            if self.state == Grass.st_growing:
-                self.clock.start(2)
+            if self.state == Fruit.st_growing:
+                self.clock.start(1)
                 self.color = Light_green
                 self.age += 1
-            elif self.state == Grass.st_ripe:
-                self.saturability -= (self.age - Grass.Rotten) * 10
+            elif self.state == Fruit.st_ripe:
+                self.saturability -= (self.age - Fruit.Rotten) * 10
                 self.color = Ripe_green
-                self.clock.start(2)
+                self.clock.start(1)
                 self.age += 1
-            elif self.state == Grass.st_rotten:
-                self.saturability -= (self.age - Grass.Rotten)
+            elif self.state == Fruit.st_rotten:
+                self.saturability -= (self.age - Fruit.Rotten)
                 self.color = Rotten_green
-                self.clock.start(2)
+                self.clock.start(1)
                 self.age += 1
+            canv.coords(self.id,
+                        self.coord_x - 2 * self.size,
+                        self.coord_y - 2 * self.size,
+                        self.coord_x + 2 * self.size,
+                        self.coord_y + 2 * self.size,
+                        )

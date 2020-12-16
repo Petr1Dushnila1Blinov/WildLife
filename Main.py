@@ -13,7 +13,7 @@ def create_started_window():
     window.geometry('300x300')
     lbl = tk.Label(window, text="   Welcome to WildLife simulator", font=("Arial Bold", 14))
     lbl.grid(column=0, row=0)
-    global GO_MAIN, scale_predator, scale_animal, scale_grass
+    global GO_MAIN, scale_predator, scale_animal, scale_fruit
 
     # changes the state of inscription
     def game_started():
@@ -51,10 +51,10 @@ def create_started_window():
     lbl_animal.grid(column=0, row=5)
     scale_animal = tk.Scale(window, orient=tk.HORIZONTAL)
     scale_animal.grid(column=0, row=6)
-    lbl_grass = tk.Label(window, text="Grass Scale", font=("Arial Bold", 14))
-    lbl_grass.grid(column=0, row=7)
-    scale_grass = tk.Scale(window, orient=tk.HORIZONTAL)
-    scale_grass.grid(column=0, row=8)
+    lbl_fruit = tk.Label(window, text="Fruit Scale", font=("Arial Bold", 14))
+    lbl_fruit.grid(column=0, row=7)
+    scale_fruit = tk.Scale(window, orient=tk.HORIZONTAL)
+    scale_fruit.grid(column=0, row=8)
 
 
 global length, heigth
@@ -78,14 +78,14 @@ def determine_quantities_animals():
         predators[i].coord_x = randint(20, length - 20)
         predators[i].coord_y = randint(20, height - 20)
 
-def determine_grass():
-    global quant_grass, grass
-    quant_grass = 1 * int(scale_grass.get())  # takes quantity of growing grass from SCALE in main menu
-    grass = [0] * quant_grass
-    for i in range(quant_grass):  # filling map with cattle
-        grass[i] = Grass()
-        grass[i].coord_x = randint(20, length - 20)
-        grass[i].coord_y = randint(20, height - 20)
+def determine_fruits():
+    global quant_fruits, fruits
+    quant_fruits = 1 * int(scale_fruit.get())  # takes quantity of growing fruits from SCALE in main menu
+    fruits = [0] * quant_fruits
+    for i in range(quant_fruits):  # filling map with fruits
+        fruits[i] = Fruit()
+        fruits[i].coord_x = randint(20, length - 20)
+        fruits[i].coord_y = randint(20, height - 20)
 
 
 
@@ -102,7 +102,7 @@ def main_game():
     # if still works
     if not DETERMINED:
         determine_quantities_animals()
-        determine_grass()
+        determine_fruits()
         DETERMINED = True
 
     # period of update
@@ -156,11 +156,11 @@ def main_game():
         c.update()
         c.move(delta_t)
 
-    for g in grass:   # grass life
-        if g.state == 3:
-            grass.remove(g)
-            quant_grass -= 1
-        g.update()
+    for f in fruits:   # fruits life
+        if f.state == 3:
+            grass.remove(f)
+            quant_fruits -= 1
+        f.update()
 
     write_statistics(delta_t)  # writes quantity and time in massives below
 
@@ -170,6 +170,7 @@ Time = []
 time_live = 0
 Quant_cattle = []
 Quant_predators = []
+Quant_fruits = []
 
 
 # remembers statistics to print it further(uses matplotlib)
