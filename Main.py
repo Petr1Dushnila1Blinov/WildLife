@@ -100,8 +100,8 @@ def food_generation():
     global quant_fruits, fruits
     old_count = len(fruits)
     clock = Clock()
-    clock.start(0.000001)
-    quant_fruits += 1 * int(scale_fruit.get())
+    clock.start(100)
+    quant_fruits = 1 * int(scale_fruit.get())
     new_fruits = [0] * (quant_fruits - old_count)
     fruits.append(new_fruits)
     for i in range(old_count , len(fruits)):  # filling map with fruits
@@ -111,9 +111,11 @@ def food_generation():
 
 
 
+food_time = time.time()
+start_time = time.time()
 # head function
 def main_game():
-    global delta_t, current_time, cattle, predators, grass, DETERMINED, quant_cattle, quant_predators, quant_fruits
+    global delta_t, current_time, cattle, predators, grass, DETERMINED, quant_cattle, quant_predators, quant_fruits, food_time, start_time
     # if still works
     if not DETERMINED:
         determine_quantities_animals()
@@ -123,7 +125,7 @@ def main_game():
     # period of update
     delta_t = time.time() - current_time
     current_time = time.time()
-
+    food_time += delta_t
     for p in predators:  # predators action
         if p.state == 0:
             while ((p.coord_x - x_lake) / (a_axle + 0.5 * R)) ** 2 + (
@@ -177,7 +179,11 @@ def main_game():
             fruits.remove(f)
             quant_fruits -= 1
         f.update()
-    food_generation()
+    print(food_time, start_time)
+    if food_time - start_time > 1:
+        food_generation()
+        food_time = time.time()
+        start_time = time.time()
     write_statistics(delta_t)  # writes quantity and time in massives below
 
 
