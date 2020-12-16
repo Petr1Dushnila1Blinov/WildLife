@@ -83,7 +83,7 @@ def determine_grass():
     quant_grass = 1 * int(scale_grass.get())  # takes quantity of growing grass from SCALE in main menu
     grass = [0] * quant_grass
     for i in range(quant_grass):  # filling map with cattle
-        grass[i] = Cattle()
+        grass[i] = Grass()
         grass[i].coord_x = randint(20, length - 20)
         grass[i].coord_y = randint(20, height - 20)
 
@@ -98,7 +98,7 @@ current_time = time.time()
 
 # head function
 def main_game():
-    global delta_t, current_time, cattle, predators, DETERMINED, quant_cattle, quant_predators
+    global delta_t, current_time, cattle, predators, grass, DETERMINED, quant_cattle, quant_predators, quant_grass
     # if still works
     if not DETERMINED:
         determine_quantities_animals()
@@ -156,7 +156,10 @@ def main_game():
         c.update()
         c.move(delta_t)
 
-    for g in grass:
+    for g in grass:   # grass life
+        if g.state == 3:
+            grass.remove(g)
+            quant_grass -= 1
         g.update()
 
     write_statistics(delta_t)  # writes quantity and time in massives below
