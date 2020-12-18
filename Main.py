@@ -100,7 +100,7 @@ def food_generation():
     global quant_fruits, fruits
     old_count = len(fruits)
     clock = Clock()
-    clock.start(0.000001)
+    clock.start(150)
     quant_fruits += 1 * int(scale_fruit.get())
     new_fruits = [0] * (quant_fruits - old_count)
     fruits.append(new_fruits)
