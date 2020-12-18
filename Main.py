@@ -230,8 +230,8 @@ def main_game():
 
 
     for f in fruits:  # fruits life
-        while ((f.coord_x - x_lake) / a_axle) ** 2 + (
-                (f.coord_y - y_lake) / b_axle) ** 2 <= 1:
+        while ((f.coord_x - x_lake) / (2*a_axle)) ** 2 + (
+                (f.coord_y - y_lake) / (2*b_axle)) ** 2 <= 1:
             f.coord_x = randint(20, length - 20)
             f.coord_y = randint(20, height - 20)
         if f.state == 3:
