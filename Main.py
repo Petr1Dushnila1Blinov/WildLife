@@ -61,7 +61,7 @@ global length, heigth
 length, height = 800, 600
 
 
-# function determines animals quantity
+# function determines animals quantity and their location
 def determine_quantities_animals():
     global quant_cattle, cattle, quant_predators, predators
     quant_cattle = 2 * int(scale_animal.get())  # takes quantity of cattle from SCALE in main menu
@@ -79,16 +79,18 @@ def determine_quantities_animals():
         predators[i].coord_y = randint(20, height - 20)
 
 
+# function determines fruits quantity and their location
 def determine_fruits():
     global quant_fruits, fruits
     quant_fruits = 1 * int(scale_fruit.get())  # takes quantity of growing fruits from SCALE in main menu
-    fruits = [0] * quant_fruits
+    fruits = [0] * quant_fruits  # massive where information about fruits contains
     for i in range(quant_fruits):  # filling map with fruits
         fruits[i] = Fruit()
         fruits[i].coord_x = randint(20, length - 20)
         fruits[i].coord_y = randint(20, height - 20)
 
 
+# main variables
 RUNNING_MATYEGO = True
 GO_START = True
 DESTROYED = False
@@ -96,6 +98,7 @@ DETERMINED = False
 current_time = time.time()
 
 
+# generates a number of fruits
 def food_generation():
     global fruits
     old_count = len(fruits)
@@ -164,6 +167,7 @@ def main_game():
 
     for p in predators:  # predators action
         if p.state == 0:
+            # spawns predators NOT in the lake
             while ((p.coord_x - x_lake) / (a_axle + 0.5 * R)) ** 2 + (
                     (p.coord_y - y_lake) / (b_axle + 0.5 * R)) ** 2 <= 1:
                 p.coord_x = randint(20, length - 20)
@@ -174,6 +178,7 @@ def main_game():
         r_min = 1000000000
         r_taken_min = 1000000000
         old_kills = p.kills
+        # algorithm to find correct aim
         if p.state != 2 and p.state != 3:
             if (not p.nearest_cattle == None) and \
                     ((p.coord_x - p.nearest_cattle.coord_x) ** 2 + (p.coord_y - p.nearest_cattle.coord_y) ** 2) ** 0.5 < \
@@ -190,7 +195,9 @@ def main_game():
                 nearest_taken_cattle = None
                 p.nearest_predator = None
                 for c in cattle:
-                    r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
+                    # distance from cattle to predator
+                    r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5
+                    # defines if cattle is next enough
                     if r < 0.08 * p.notice_radius and r < r_min:
                         nearest_target = c
                         r_min = r
@@ -200,12 +207,12 @@ def main_game():
 
                             r_min = r
                         else:
-                            if r<p.notice_radius and r<r_taken_min:
+                            if r < p.notice_radius and r < r_taken_min:
                                 nearest_taken_cattle = c
                                 r_taken_min = r
                 if nearest_target == None and not nearest_taken_cattle == None:
                     nearest_target = nearest_taken_cattle
-
+                # if nearest cattle is defined but is not nearest we mark is as usual
                 if p.nearest_cattle != nearest_target and p.nearest_cattle != None :
                     p.nearest_cattle.under_attack = False
                     p.nearest_cattle.color = 'green'
@@ -216,7 +223,7 @@ def main_game():
                 if p.nearest_cattle.death():
                     if p.nearest_cattle in cattle:
                         cattle.remove(p.nearest_cattle)
-                    quant_cattle -= 1
+                        quant_cattle -= 1
                     del p.nearest_cattle
                     p.nearest_cattle = None
                     p.kills += 1
@@ -230,16 +237,12 @@ def main_game():
             p.nearest_cattle.color = 'green'
             canv.itemconfig(p.nearest_cattle.id,
                             fill=p.nearest_cattle.color)
-
         for k in predators:
-            if p == k:
-                pass
-            else:
+            if p != k:
                 r = ((p.coord_x - k.coord_x) ** 2 + (p.coord_y - k.coord_y) ** 2) ** 0.5  # distance from predator
-                if r <= r_min:  # to predator
+                if r <= r_min:
                     p.nearest_predator = k  # defines nearest cattle
                     r_min = r
-        # print('Здоровье: ', p.health, 'Жажда: ', p.thirst, 'Голод: ', p.hunger)
 
         if p.kills > 0 and p.kills > old_kills:  # Алгоритм увеличения количества хищников
             Chance = randint(0, 100)
@@ -251,6 +254,7 @@ def main_game():
         p.move(delta_t)
 
     for c in cattle:  # cattle life
+        # spawns cattle NOT inside the lake
         while ((c.coord_x - x_lake) / (a_axle + 0.6 * R)) ** 2 + ((c.coord_y - y_lake) / (b_axle + 0.6 * R)) ** 2 <= 1:
             c.coord_x = randint(20, length - 20)
             c.coord_y = randint(20, height - 20)
@@ -260,7 +264,7 @@ def main_game():
         for p in predators:
             r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
             if r <= r_min:
-                c.nearest_predator = p  # defines nearest predactor
+                c.nearest_predator = p  # defines nearest predator
                 r_min = r
 
         r_min = 1000000000
@@ -269,9 +273,14 @@ def main_game():
             if r <= r_min:
                 c.nearest_fruit = f  # defines nearest fruit
                 r_min = r
+<<<<<<< HEAD
 
         '''
         if c.birfability > 0 :
+=======
+        # creates another cattle if birthability is bigger than zero
+        if c.birfability > 0:
+>>>>>>> 1ddaa3ba8a980d6bdc046df2b625bf572c6e7dc9
             Chance = randint(0, 300)
             if Chance <= c.birfability * 10:
                 cattle_birn(c)
@@ -279,7 +288,6 @@ def main_game():
         '''
         c.update()
         c.move(delta_t)
-
 
 
 Time = []
@@ -297,9 +305,9 @@ def write_statistics(delta_t):
     global quant_cattle, quant_predators, \
         Quant_cattle, Quant_predators, Time, time_live
 
-    plt.xlabel(r"$time,\ с$")
-    plt.ylabel(r"$Quantity\  of\  animals$")
-    plt.title(r"$Quantity(t)$")
+    plt.xlabel(r"$time,\ с$")  # defines name of x label
+    plt.ylabel(r"$Quantity\  of\  animals$")  # defines name of y label
+    plt.title(r"$Quantity(t)$")  # title of graphics
     Quant_cattle.append(quant_cattle)
     Quant_predators.append(quant_predators)
     time_live += delta_t
@@ -313,8 +321,8 @@ def print_statistics(file: str):
     :return: graphics of population
     """
     global Time, Quant_predators, Quant_cattle
-    plt.plot(Time, Quant_cattle, 'ro', color='green', markersize=2, label='Травоядные')
-    plt.plot(Time, Quant_predators, 'ro', color='red', markersize=2, label='Хищники')
+    plt.plot(Time, Quant_cattle, 'ro', color='green', markersize=2, label='Травоядные')  # plots number_of_cattle(time)
+    plt.plot(Time, Quant_predators, 'ro', color='red', markersize=2, label='Хищники')  # plots number_of_predators(time)
     plt.legend(loc='upper right', fontsize=10)
     plt.savefig(file)
     plt.show()

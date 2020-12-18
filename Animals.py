@@ -29,6 +29,7 @@ class Animal:
         """
         self.coord_x += self.velocity_x * delta_t
         self.coord_y += self.velocity_y * delta_t
+        # controls if animals are inside the map
         if self.coord_x <= self.radius:
             self.velocity_x *= -1
             self.coord_x += self.velocity_x * delta_t
@@ -41,7 +42,7 @@ class Animal:
         if self.coord_y >= height - self.radius:
             self.velocity_y *= -1
             self.coord_y += self.velocity_y * delta_t
-
+        # controls if animals can enter lake surface
         if ((x_lake - self.coord_x) / (a_axle + self.radius)) ** 2 + (
                 (y_lake - self.coord_y) / (b_axle + self.radius)) ** 2 <= 1:
             self.velocity_y *= -1
@@ -54,11 +55,8 @@ class Animal:
                     self.coord_x + self.radius,
                     self.coord_y + self.radius)
 
-    def update(self):
-        pass
 
-
-# needed parameters for cattle
+# needed parameters for cattle(peaceful animals)
 class Cattle(Animal):
     st_hungry = -1 # always wanna eat
     st_idle = 0  # wandering around state
@@ -71,8 +69,8 @@ class Cattle(Animal):
         Animal.__init__(self)
         self.anxiety = 0  # represents how anxious the animal is
         self.state = Cattle.st_idle
-        self.nearest_predator = None
-        self.nearest_fruit = None
+        self.nearest_predator = None  # if cattle could identify predator near it
+        self.nearest_fruit = None  # if cattle could identify predator near it
         self.velocity = 35  # cattle basic speed
         self.color = 'green'
         self.birfability = 0
@@ -91,6 +89,7 @@ class Cattle(Animal):
             canv.delete(self.id)
             return True
 
+    # function that defines nearest predator
     def notice_predator(self):
         if self.nearest_predator == None:
             return False
@@ -102,6 +101,7 @@ class Cattle(Animal):
             else:
                 return False
 
+    # function that controls state of thirst
     def is_thirsty(self):
         if (self.thirst > 50000 and self.state != 3) or (self.thirst > -50000 and self.state == 3):
             self.health -= 1
@@ -109,12 +109,14 @@ class Cattle(Animal):
         else:
             return False
 
+    # function that identifies if there is lake near cattle
     def lake_nearby(self):
         if ((self.coord_x - x_lake) / (a_axle + R)) ** 2 + ((self.coord_y - y_lake) / (b_axle + R)) ** 2 <= 1:
             return True
         else:
             return False
 
+    # function that updates parametres after eating
     def eat(self, object):
         if object.state is not Fruit.st_dead or object.state is not Fruit.st_growing:
             self.hunger -= object.saturability
@@ -125,7 +127,7 @@ class Cattle(Animal):
             self.clock.start(200)
             self.birfability += 0
 
-
+    # function that defines nearest fruit
     def notice_fruit(self):
         if self.nearest_fruit == None:
             return False
@@ -140,8 +142,7 @@ class Cattle(Animal):
         else:
             return False
 
-
-
+    # controls states and changes it
     def state_machine(self):
         if (self.health < 0) or (self.hunger > 100000):
             self.state = Cattle.st_dead
@@ -159,6 +160,7 @@ class Cattle(Animal):
             if self.state == Cattle.st_idle and not self.is_thirsty() and self.notice_fruit():
                 self.state = Cattle.st_hungry
 
+    # makes world moving
     def update(self):
         self.state_machine()
         self.clock.update()
@@ -189,7 +191,6 @@ class Cattle(Animal):
                 self.velocity_x = self.velocity * d_x / r
                 self.velocity_y = self.velocity * d_y / r
                 self.hunger += 3
-
 
             if self.state == Cattle.st_drink:
                 self.velocity_x = 0
@@ -237,6 +238,7 @@ class Predator(Animal):
         else:
             return False
 
+    # function that controls state of thirst
     def is_thirsty(self):
         if (self.thirst > 50000 and self.state != 3) or (self.thirst > -50000 and self.state == 3):
             self.health -= 1
@@ -244,6 +246,7 @@ class Predator(Animal):
         else:
             return False
 
+    # function that identifies if there is lake near cattle
     def lake_nearby(self):
         if ((self.coord_x - x_lake) / (a_axle + R)) ** 2 + ((self.coord_y - y_lake) / (b_axle + R)) ** 2 <= 1:
             return True
@@ -267,9 +270,6 @@ class Predator(Animal):
                 self.state = Predator.st_drink
             if not self.is_thirsty() and self.state >= Predator.st_thirst:
                 self.state = Predator.st_idle
-            #if self.lake_nearby() and self.state is not self.is_thirsty():
-                #self.coord_x += 3*abs(self.coord_x - x_lake)/(self.coord_x - x_lake)
-                #self.coord_y += 3*abs(self.coord_y - y_lake) / (self.coord_y - y_lake)
 
     def __init__(self):
         Animal.__init__(self)

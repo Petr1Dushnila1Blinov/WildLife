@@ -1,6 +1,7 @@
 import time
 
 
+# implemented timer
 class Clock:
     def __init__(self):
         self.is_running = False
