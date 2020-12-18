@@ -98,6 +98,8 @@ class Fruit:
                 self.state = Fruit.st_ripe
             if self.age >= Fruit.Rotten:
                 self.state = Fruit.st_rotten
+            if self.lake_nearby() is True:
+                self.state = Fruit.st_dead
 
     def update(self):
         self.state_machine()
