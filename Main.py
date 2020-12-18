@@ -108,10 +108,11 @@ def food_generation():
         fruits[i].coord_y = randint(20, height - 20)
 
 def predator_birn(object):
-    global predators
+    global predators, quant_predators
     old_count = len(predators)
     new_predator = [0]
     predators += new_predator
+    quant_predators += 1
     for i in range(old_count, len(predators)):  # filling map with fruits
         predators[i] = Predator()
         predators[i].coord_x = object.coord_x + 2
@@ -211,12 +212,13 @@ def main_game():
                     p.nearest_predator = k  # defines nearest cattle
                     r_min = r
         # print('Здоровье: ', p.health, 'Жажда: ', p.thirst, 'Голод: ', p.hunger)
-        if p.kills > 0 and p.kills > old_kills:
+
+        if p.kills > 0 and p.kills > old_kills:  # Алгоритм увеличения количества хищников
             Chance = randint(0, 100)
             if Chance <= p.kills * 10:
                 predator_birn(p)
                 p.kills = 0
-                #p.clock.start(500)
+
         p.update()
         p.move(delta_t)
 
