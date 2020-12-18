@@ -99,19 +99,10 @@ current_time = time.time()
 def food_generation():
     global fruits
     old_count = len(fruits)
-<<<<<<< HEAD
-    clock = Clock()
-    clock.start(150)
-    quant_fruits += 1 * int(scale_fruit.get())
-    new_fruits = [0] * (quant_fruits - old_count)
-    fruits.append(new_fruits)
-    for i in range(old_count , len(fruits)):  # filling map with fruits
-=======
     quant_fruits = 1 * int(scale_fruit.get())
     new_fruits = [0] * (quant_fruits)
     fruits += new_fruits
     for i in range(old_count, len(fruits)):  # filling map with fruits
->>>>>>> d1f0887f671e3b5fea2b92fce447c43c20d1d6f8
         fruits[i] = Fruit()
         fruits[i].coord_x = randint(20, length - 20)
         fruits[i].coord_y = randint(20, height - 20)
