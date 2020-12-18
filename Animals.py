@@ -8,8 +8,6 @@ from Landscape import *
 from Clock import *
 
 
-
-
 class Animal:
     def __init__(self):
         self.coord_x = -10  # x coordinate
@@ -17,7 +15,7 @@ class Animal:
         self.velocity_x = 0  # speed x-axis
         self.velocity_y = 0  # speed y-axis
         self.hunger = 0  # represents how hungry the animal is
-        self.thirst = randint(0,30000)  # represents how thirsty the animal is
+        self.thirst = randint(0, 30000)  # represents how thirsty the animal is
         self.health = 10000  # represents the health points
         self.mass = 10 ** 3  # mass of the animal
         self.radius = R  # radius of image
@@ -164,6 +162,7 @@ class Cattle(Animal):
                 self.thirst -= 80
                 self.health = 40000
 
+
 class Predator(Animal):
     st_idle = 0  # wandering around state
     st_chase = 1  # chasing cattle state
@@ -187,8 +186,6 @@ class Predator(Animal):
                 return True
             else:
                 return False
-
-
 
     def is_thirsty(self):
         if (self.thirst > 50000 and self.state != 3) or (self.thirst > -50000 and self.state == 3):
@@ -226,6 +223,7 @@ class Predator(Animal):
         self.color = 'red'
         self.notice_radius = 300  # radius where predator notices objects
         self.state = Predator.st_idle  # basic state is wandering around
+        self.kills = 0
         self.nearest_cattle = None
         self.nearest_predator = None
         self.health = 40000
@@ -288,6 +286,3 @@ class Predator(Animal):
                 self.velocity_y = -self.velocity * d_y / r
                 self.hunger += 2
                 self.thirst += 2"""
-
-
-
