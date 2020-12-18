@@ -71,7 +71,6 @@ class Cattle(Animal):
     def __init__(self):
         Animal.__init__(self)
         self.anxiety = 0  # represents how anxious the animal is
-        self.mass = 10 ** 3  # mass of the animal
         self.state = Cattle.st_idle
         self.nearest_predator = None
         self.velocity = 35  # cattle basic speed
@@ -225,7 +224,6 @@ class Predator(Animal):
     def __init__(self):
         Animal.__init__(self)
         self.color = 'red'
-        self.mass = 10 ** 2
         self.notice_radius = 300  # radius where predator notices objects
         self.state = Predator.st_idle  # basic state is wandering around
         self.nearest_cattle = None
