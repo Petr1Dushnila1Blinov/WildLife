@@ -120,14 +120,15 @@ def predator_birn(object):
 
 def cattle_birn(object):
     global cattle, quant_cattle
-    old_count = len(cattle)
-    new_cattle = [0]
-    cattle += new_cattle
-    quant_cattle += 1
-    for i in range(old_count, len(cattle)):  # filling map with fruits
-        cattle[i] = Cattle()
-        cattle[i].coord_x = object.coord_x + 2
-        cattle[i].coord_y = object.coord_y + 2
+    if object.birfability > 0 :
+        old_count = len(cattle)
+        new_cattle = [0]
+        cattle += new_cattle
+        quant_cattle += 1
+        for i in range(old_count, len(cattle)):  # filling map with fruits
+            cattle[i] = Cattle()
+            cattle[i].coord_x = object.coord_x + 2
+            cattle[i].coord_y = object.coord_y + 2
 
 food_time = time.time()
 start_time = time.time()
@@ -254,7 +255,6 @@ def main_game():
             c.coord_x = randint(20, length - 20)
             c.coord_y = randint(20, height - 20)
 
-        old_birfability = c.birfability
 
         r_min = 1000000000
         for p in predators:
@@ -269,12 +269,14 @@ def main_game():
             if r <= r_min:
                 c.nearest_fruit = f  # defines nearest fruit
                 r_min = r
+
+        '''
         if c.birfability > 0 :
             Chance = randint(0, 300)
-            if Chance <= (c.birfability - old_birfability) * 1000:
-                c.birfability = 0
+            if Chance <= c.birfability * 10:
                 cattle_birn(c)
-
+                c.birfability = 0
+        '''
         c.update()
         c.move(delta_t)
 

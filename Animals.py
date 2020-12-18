@@ -76,6 +76,7 @@ class Cattle(Animal):
         self.velocity = 35  # cattle basic speed
         self.color = 'green'
         self.birfability = 0
+        self.eaten = 0
         self.under_attack = False
         self.notice_radius = 40  # radius where cattle notices objects
         self.id = canv.create_oval(self.coord_x - self.radius,
@@ -122,7 +123,7 @@ class Cattle(Animal):
             self.thirst += 4
             self.nearest_fruit.health -= 200
             self.clock.start(200)
-            self.birfability += 0.2
+            self.birfability += 0
 
 
     def notice_fruit(self):
@@ -171,17 +172,6 @@ class Cattle(Animal):
                 self.clock.start(2)
                 self.thirst += 2000
 
-            if self.state == Cattle.st_hungry:
-                d_x = (- self.coord_x + self.nearest_fruit.coord_x)
-                d_y = (- self.coord_y + self.nearest_fruit.coord_y)
-                r = math.sqrt(d_x ** 2 + d_y ** 2)
-                if r < self.radius:
-                    self.eat(self.nearest_fruit)
-                else:
-                    self.velocity_x = self.velocity * d_x / r
-                    self.velocity_y = self.velocity * d_y / r
-                    self.thirst += 2
-                    self.hunger += 1
 
             if self.state == Cattle.st_runaway:
                 d_x = (- self.coord_x + self.nearest_predator.coord_x)
@@ -207,6 +197,18 @@ class Cattle(Animal):
                 self.clock.start(2)
                 self.thirst -= 80
                 self.health = 40000
+
+            if self.state == Cattle.st_hungry:
+                d_x = (- self.coord_x + self.nearest_fruit.coord_x)
+                d_y = (- self.coord_y + self.nearest_fruit.coord_y)
+                r = math.sqrt(d_x ** 2 + d_y ** 2)
+                if r < self.radius:
+                    self.eat(self.nearest_fruit)
+                else:
+                    self.velocity_x = self.velocity * d_x / r
+                    self.velocity_y = self.velocity * d_y / r
+                    self.thirst += 2
+                    self.hunger += 1
 
 
 class Predator(Animal):
