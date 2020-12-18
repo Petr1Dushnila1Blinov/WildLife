@@ -66,10 +66,12 @@ class Fruit:
                                         fill=self.color, outline="gold")
         self.clock = Clock()
 
+    # if fruit is eaten we delete it
     def eaten(self):
         canv.delete(self.id)
         return True
 
+    # defines if lake is nearby
     def lake_nearby(self):
         if ((self.coord_x - x_lake) / (a_axle + 3*self.size)) ** 2 +\
                 ((self.coord_y - y_lake) / (b_axle + 3*self.size)) ** 2 <= 1:
@@ -77,8 +79,7 @@ class Fruit:
         else:
             return False
 
-    # def being_eaten(self):
-
+    # controls states of fruits and changes it
     def state_machine(self):
         if (self.health <= 0) or self.age >= Fruit.Dead:
             self.state = Fruit.st_dead
@@ -92,6 +93,7 @@ class Fruit:
             if self.lake_nearby() is True:
                 self.state = Fruit.st_dead
 
+    # updates states
     def update(self):
         self.state_machine()
         self.clock.update()
@@ -106,7 +108,6 @@ class Fruit:
             elif self.state == Fruit.st_rotten:
                 self.saturability -= (self.age - Fruit.Rotten)
                 self.color = Rotten_green
-
             self.clock.start(0.1)
             self.age += 1
             canv.coords(self.id,
