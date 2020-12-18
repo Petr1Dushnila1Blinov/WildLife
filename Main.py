@@ -191,17 +191,6 @@ def main_game():
             canv.itemconfig(p.nearest_cattle.id,
                             fill=p.nearest_cattle.color)
 
-        """for c in cattle:
-            r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
-            if r <= r_min:
-                p.nearest_target = c  # defines nearest cattle
-                r_min = r
-        if p.nearest_target is not None:  # if it could define a particular cattle next to predator
-            if p.nearest_target.death():
-                cattle.remove(p.nearest_target)
-                quant_cattle -= 1
-                del p.nearest_target
-                p.nearest_target = None"""
         for k in predators:
             if p == k:
                 pass
