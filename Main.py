@@ -227,7 +227,13 @@ def main_game():
         c.update()
         c.move(delta_t)
 
+
+
     for f in fruits:  # fruits life
+        while ((f.coord_x - x_lake) / a_axle) ** 2 + (
+                (f.coord_y - y_lake) / b_axle) ** 2 <= 1:
+            f.coord_x = randint(20, length - 20)
+            f.coord_y = randint(20, height - 20)
         if f.state == 3:
             fruits.remove(f)
             quant_fruits -= 1
