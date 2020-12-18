@@ -118,19 +118,65 @@ def main_game():
             predators.remove(p)
             quant_predators -= 1
         r_min = 1000000000
-        p.nearest_cattle = None
-        p.nearest_predator = None
-        for c in cattle:
-            r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
-            if r <= r_min:
-                p.nearest_cattle = c  # defines nearest cattle
-                r_min = r
-        if p.nearest_cattle is not None:  # if it could define a particular cattle next to predator
+        r_taken_min = 1000000000
+        if (not p.nearest_cattle == None) and \
+                ((p.coord_x - p.nearest_cattle.coord_x) ** 2 + (p.coord_y - p.nearest_cattle.coord_y) ** 2) ** 0.5 < \
+                0.1*p.notice_radius:
+            pass
+        else:
+
+            if not p.nearest_cattle == None:
+                p.nearest_cattle.under_attack = False
+                p.nearest_cattle.color = 'green'
+
+            nearest_target = None
+            p.nearest_cattle = None
+            nearest_taken_cattle = None
+            p.nearest_predator = None
+            for c in cattle:
+                r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
+                if r<0.08*p.notice_radius and r<r_min:
+                    nearest_target = c
+                    r_min = r
+                else:
+                    if r<p.notice_radius and r<r_min and not c.under_attack:
+                        nearest_target = c
+
+                        r_min = r
+                    else:
+                        if r<p.notice_radius and r<r_taken_min:
+                            nearest_taken_cattle = c
+                            r_taken_min = r
+            if nearest_target == None and not nearest_taken_cattle == None:
+                nearest_target = nearest_taken_cattle
+
+            if p.nearest_cattle != nearest_target and p.nearest_cattle != None :
+                p.nearest_cattle.under_attack = False
+                p.nearest_cattle.color = 'green'
+            p.nearest_cattle = nearest_target
+        if not p.nearest_cattle == None:
             if p.nearest_cattle.death():
-                cattle.remove(p.nearest_cattle)
+                if p.nearest_cattle in cattle:
+                    cattle.remove(p.nearest_cattle)
                 quant_cattle -= 1
                 del p.nearest_cattle
                 p.nearest_cattle = None
+            else:
+                p.nearest_cattle.under_attack = True
+                p.nearest_cattle.color = 'yellow'
+
+
+        """for c in cattle:
+            r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
+            if r <= r_min:
+                p.nearest_target = c  # defines nearest cattle
+                r_min = r
+        if p.nearest_target is not None:  # if it could define a particular cattle next to predator
+            if p.nearest_target.death():
+                cattle.remove(p.nearest_target)
+                quant_cattle -= 1
+                del p.nearest_target
+                p.nearest_target = None"""
         for k in predators:
             if p == k:
                 pass
