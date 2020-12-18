@@ -179,13 +179,15 @@ class Predator(Animal):
     def notice_cattle(self):
         if self.nearest_cattle == None:
             return False
-        else:
+        elif self.nearest_cattle is not self.nearest_cattle.st_drink:
             r = math.sqrt((self.nearest_cattle.coord_x - self.coord_x) ** 2 +
                           (self.nearest_cattle.coord_y - self.coord_y) ** 2)
             if r <= self.notice_radius:
                 return True
             else:
                 return False
+        else:
+            return False
 
     def is_thirsty(self):
         if (self.thirst > 50000 and self.state != 3) or (self.thirst > -50000 and self.state == 3):
@@ -217,6 +219,9 @@ class Predator(Animal):
                 self.state = Predator.st_drink
             if not self.is_thirsty() and self.state >= Predator.st_thirst:
                 self.state = Predator.st_idle
+            #if self.lake_nearby() and self.state is not self.is_thirsty():
+                #self.coord_x += 3*abs(self.coord_x - x_lake)/(self.coord_x - x_lake)
+                #self.coord_y += 3*abs(self.coord_y - y_lake) / (self.coord_y - y_lake)
 
     def __init__(self):
         Animal.__init__(self)
