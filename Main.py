@@ -144,6 +144,7 @@ def main_game():
             quant_predators -= 1
         r_min = 1000000000
         r_taken_min = 1000000000
+        old_kills = p.kills
         if p.state != 2 and p.state != 3:
             if (not p.nearest_cattle == None) and \
                     ((p.coord_x - p.nearest_cattle.coord_x) ** 2 + (p.coord_y - p.nearest_cattle.coord_y) ** 2) ** 0.5 < \
@@ -210,12 +211,12 @@ def main_game():
                     p.nearest_predator = k  # defines nearest cattle
                     r_min = r
         # print('Здоровье: ', p.health, 'Жажда: ', p.thirst, 'Голод: ', p.hunger)
-        if p.kills > 0:
+        if p.kills > 0 and p.kills > old_kills:
             Chance = randint(0, 100)
-            if Chance >= p.kills * 10:
+            if Chance <= p.kills * 10:
                 predator_birn(p)
                 p.kills = 0
-                p.clock.start(500)
+                #p.clock.start(500)
         p.update()
         p.move(delta_t)
 
