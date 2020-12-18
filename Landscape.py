@@ -41,15 +41,6 @@ def lake(canv):
 
 (x_lake, y_lake, a_axle, b_axle) = lake(canv)
 
-'''
-def draw_grass(x, y, size, color, canv):
-    canv.create_arc(x - 5 * size, y - 5 * size, x + 5 * size, y + 5 * size, start=0,
-                    extent=180, fill=color, width=0.2)
-    for i in range(0, 45):
-        for j in range(-4, 5):
-            canv.create_line(x + (j / 5) * i / 10 * size, y + (i / 10) ** 2 * size,
-                             x + (j / 5) * (i + 1) / 10 * size, y + ((i + 1) / 10) ** 2 * size, fill=color)
-'''
 
 
 class Fruit:
@@ -119,10 +110,10 @@ class Fruit:
             self.clock.start(0.1)
             self.age += 1
             canv.coords(self.id,
-                        self.coord_x - 2 * self.size,
-                        self.coord_y - 2 * self.size,
-                        self.coord_x + 2 * self.size,
-                        self.coord_y + 2 * self.size,
+                        self.coord_x - 1 * self.size,
+                        self.coord_y - 1 * self.size,
+                        self.coord_x + 1 * self.size,
+                        self.coord_y + 1 * self.size,
                         )
             canv.itemconfig(self.id,
                             fill=self.color)

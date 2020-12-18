@@ -133,6 +133,22 @@ def main_game():
     delta_t = time.time() - current_time
     current_time = time.time()
     food_time += delta_t
+
+    for f in fruits:  # fruits life
+        while ((f.coord_x - x_lake) / (2 * a_axle)) ** 2 + (
+                (f.coord_y - y_lake) / (2 * b_axle)) ** 2 <= 1:
+            f.coord_x = randint(20, length - 20)
+            f.coord_y = randint(20, height - 20)
+        if f.state == 3:
+            fruits.remove(f)
+            quant_fruits -= 1
+        f.update()
+    if food_time - start_time > 4:
+        food_generation()
+        food_time = time.time()
+        start_time = time.time()
+    write_statistics(delta_t)  # writes quantity and time in massives below
+
     for p in predators:  # predators action
         if p.state == 0:
             while ((p.coord_x - x_lake) / (a_axle + 0.5 * R)) ** 2 + (
@@ -233,22 +249,6 @@ def main_game():
         c.update()
         c.move(delta_t)
 
-
-
-    for f in fruits:  # fruits life
-        while ((f.coord_x - x_lake) / (2*a_axle)) ** 2 + (
-                (f.coord_y - y_lake) / (2*b_axle)) ** 2 <= 1:
-            f.coord_x = randint(20, length - 20)
-            f.coord_y = randint(20, height - 20)
-        if f.state == 3:
-            fruits.remove(f)
-            quant_fruits -= 1
-        f.update()
-    if food_time - start_time > 4:
-        food_generation()
-        food_time = time.time()
-        start_time = time.time()
-    write_statistics(delta_t)  # writes quantity and time in massives below
 
 
 Time = []

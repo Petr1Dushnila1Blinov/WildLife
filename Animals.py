@@ -277,12 +277,3 @@ class Predator(Animal):
                 self.clock.start(2)
                 self.thirst -= 80
                 self.health = 40000
-
-            """if self.notice_predator() is True:
-                d_x = (- self.coord_x + self.nearest_predator.coord_x)
-                d_y = (- self.coord_y + self.nearest_predator.coord_y)
-                r = math.sqrt(d_x ** 2 + d_y ** 2)
-                self.velocity_x = -self.velocity * d_x / r
-                self.velocity_y = -self.velocity * d_y / r
-                self.hunger += 2
-                self.thirst += 2"""
