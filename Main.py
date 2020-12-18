@@ -118,12 +118,23 @@ def predator_birn(object):
         predators[i].coord_x = object.coord_x + 2
         predators[i].coord_y = object.coord_y + 2
 
+def cattle_birn(object):
+    global cattle, quant_cattle
+    old_count = len(cattle)
+    new_cattle = [0]
+    cattle += new_cattle
+    quant_cattle += 1
+    for i in range(old_count, len(cattle)):  # filling map with fruits
+        cattle[i] = Cattle()
+        cattle[i].coord_x = object.coord_x + 2
+        cattle[i].coord_y = object.coord_y + 2
 
 food_time = time.time()
 start_time = time.time()
 # head function
 def main_game():
-    global delta_t, current_time, cattle, predators, grass, DETERMINED, quant_cattle, quant_predators, quant_fruits, food_time, start_time
+    global delta_t, current_time, cattle, predators, grass, DETERMINED,\
+        quant_cattle, quant_predators, quant_fruits, food_time, start_time
     # if still works
     if not DETERMINED:
         determine_quantities_animals()
@@ -242,12 +253,28 @@ def main_game():
         while ((c.coord_x - x_lake) / (a_axle + 0.6 * R)) ** 2 + ((c.coord_y - y_lake) / (b_axle + 0.6 * R)) ** 2 <= 1:
             c.coord_x = randint(20, length - 20)
             c.coord_y = randint(20, height - 20)
+
+        old_birfability = c.birfability
+
         r_min = 1000000000
         for p in predators:
             r = ((p.coord_x - c.coord_x) ** 2 + (p.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
             if r <= r_min:
                 c.nearest_predator = p  # defines nearest predactor
                 r_min = r
+
+        r_min = 1000000000
+        for f in fruits:
+            r = ((f.coord_x - c.coord_x) ** 2 + (f.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator
+            if r <= r_min:
+                c.nearest_fruit = f  # defines nearest fruit
+                r_min = r
+        if c.birfability > 0 :
+            Chance = randint(0, 300)
+            if Chance <= (c.birfability - old_birfability) * 1000:
+                c.birfability = 0
+                cattle_birn(c)
+
         c.update()
         c.move(delta_t)
 

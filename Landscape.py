@@ -80,7 +80,7 @@ class Fruit:
     # def being_eaten(self):
 
     def state_machine(self):
-        if (self.health < 0) or self.age >= Fruit.Dead:
+        if (self.health <= 0) or self.age >= Fruit.Dead:
             self.state = Fruit.st_dead
         else:
             if self.age < Fruit.Ripe:

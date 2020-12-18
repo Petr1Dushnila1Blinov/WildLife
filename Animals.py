@@ -60,6 +60,7 @@ class Animal:
 
 # needed parameters for cattle
 class Cattle(Animal):
+    st_hungry = -1 # always wanna eat
     st_idle = 0  # wandering around state
     st_runaway = 1  # run_away from predator
     st_thirst = 2  # thirsty state
@@ -71,8 +72,10 @@ class Cattle(Animal):
         self.anxiety = 0  # represents how anxious the animal is
         self.state = Cattle.st_idle
         self.nearest_predator = None
+        self.nearest_fruit = None
         self.velocity = 35  # cattle basic speed
         self.color = 'green'
+        self.birfability = 0
         self.under_attack = False
         self.notice_radius = 40  # radius where cattle notices objects
         self.id = canv.create_oval(self.coord_x - self.radius,
@@ -111,6 +114,33 @@ class Cattle(Animal):
         else:
             return False
 
+    def eat(self, object):
+        if object.state is not Fruit.st_dead or object.state is not Fruit.st_growing:
+            self.hunger -= object.saturability
+            self.birfability += int(object.saturability / 10)
+            self.health += 20
+            self.thirst += 4
+            self.nearest_fruit.health -= 200
+            self.clock.start(200)
+            self.birfability += 0.2
+
+
+    def notice_fruit(self):
+        if self.nearest_fruit == None:
+            return False
+        elif self.nearest_fruit is not self.nearest_fruit.st_growing\
+                and self.nearest_fruit is not self.nearest_fruit.st_dead:
+            r = math.sqrt((self.nearest_fruit.coord_x - self.coord_x) ** 2 +
+                          (self.nearest_fruit.coord_y - self.coord_y) ** 2)
+            if r <= self.notice_radius:
+                return True
+            else:
+                return False
+        else:
+            return False
+
+
+
     def state_machine(self):
         if (self.health < 0) or (self.hunger > 100000):
             self.state = Cattle.st_dead
@@ -124,7 +154,9 @@ class Cattle(Animal):
             if self.state == Cattle.st_thirst and self.lake_nearby():
                 self.state = Cattle.st_drink
             if not self.is_thirsty() and self.state >= Cattle.st_thirst:
-                self.state = Predator.st_idle
+                self.state = Cattle.st_idle
+            if self.state == Cattle.st_idle and not self.is_thirsty() and self.notice_fruit():
+                self.state = Cattle.st_hungry
 
     def update(self):
         self.state_machine()
@@ -139,12 +171,25 @@ class Cattle(Animal):
                 self.clock.start(2)
                 self.thirst += 2000
 
+            if self.state == Cattle.st_hungry:
+                d_x = (- self.coord_x + self.nearest_fruit.coord_x)
+                d_y = (- self.coord_y + self.nearest_fruit.coord_y)
+                r = math.sqrt(d_x ** 2 + d_y ** 2)
+                if r < self.radius:
+                    self.eat(self.nearest_fruit)
+                else:
+                    self.velocity_x = self.velocity * d_x / r
+                    self.velocity_y = self.velocity * d_y / r
+                    self.thirst += 2
+                    self.hunger += 1
+
             if self.state == Cattle.st_runaway:
                 d_x = (- self.coord_x + self.nearest_predator.coord_x)
                 d_y = (- self.coord_y + self.nearest_predator.coord_y)
                 r = math.sqrt(d_x ** 2 + d_y ** 2)
                 self.velocity_x = -self.velocity * d_x / r
                 self.velocity_y = -self.velocity * d_y / r
+                self.hunger += 2
                 self.thirst += 2
 
             if self.state == Cattle.st_thirst:
@@ -154,6 +199,7 @@ class Cattle(Animal):
                 self.velocity_x = self.velocity * d_x / r
                 self.velocity_y = self.velocity * d_y / r
                 self.hunger += 3
+
 
             if self.state == Cattle.st_drink:
                 self.velocity_x = 0
