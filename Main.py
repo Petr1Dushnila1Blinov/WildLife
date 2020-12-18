@@ -13,7 +13,7 @@ def create_started_window():
     window.geometry('300x300')
     lbl = tk.Label(window, text="   Welcome to WildLife simulator", font=("Arial Bold", 14))
     lbl.grid(column=0, row=0)
-    global GO_MAIN, scale_predator, scale_animal, scale_grass
+    global GO_MAIN, scale_predator, scale_animal, scale_fruit
 
     # changes the state of inscription
     def game_started():
@@ -51,10 +51,10 @@ def create_started_window():
     lbl_animal.grid(column=0, row=5)
     scale_animal = tk.Scale(window, orient=tk.HORIZONTAL)
     scale_animal.grid(column=0, row=6)
-    lbl_grass = tk.Label(window, text="Grass Scale", font=("Arial Bold", 14))
-    lbl_grass.grid(column=0, row=7)
-    scale_grass = tk.Scale(window, orient=tk.HORIZONTAL)
-    scale_grass.grid(column=0, row=8)
+    lbl_fruit = tk.Label(window, text="Fruit Scale", font=("Arial Bold", 14))
+    lbl_fruit.grid(column=0, row=7)
+    scale_fruit = tk.Scale(window, orient=tk.HORIZONTAL)
+    scale_fruit.grid(column=0, row=8)
 
 
 global length, heigth
@@ -78,15 +78,15 @@ def determine_quantities_animals():
         predators[i].coord_x = randint(20, length - 20)
         predators[i].coord_y = randint(20, height - 20)
 
-def determine_grass():
-    global quant_grass, grass
-    quant_grass = 1 * int(scale_grass.get())  # takes quantity of growing grass from SCALE in main menu
-    grass = [0] * quant_grass
-    for i in range(quant_grass):  # filling map with cattle
-        grass[i] = Cattle()
-        grass[i].coord_x = randint(20, length - 20)
-        grass[i].coord_y = randint(20, height - 20)
 
+def determine_fruits():
+    global quant_fruits, fruits
+    quant_fruits = 1 * int(scale_fruit.get())  # takes quantity of growing fruits from SCALE in main menu
+    fruits = [0] * quant_fruits
+    for i in range(quant_fruits):  # filling map with fruits
+        fruits[i] = Fruit()
+        fruits[i].coord_x = randint(20, length - 20)
+        fruits[i].coord_y = randint(20, height - 20)
 
 
 RUNNING_MATYEGO = True
@@ -96,22 +96,38 @@ DETERMINED = False
 current_time = time.time()
 
 
+def food_generation():
+    global fruits
+    old_count = len(fruits)
+    quant_fruits = 1 * int(scale_fruit.get())
+    new_fruits = [0] * (quant_fruits)
+    fruits += new_fruits
+    for i in range(old_count, len(fruits)):  # filling map with fruits
+        fruits[i] = Fruit()
+        fruits[i].coord_x = randint(20, length - 20)
+        fruits[i].coord_y = randint(20, height - 20)
+
+
+
+food_time = time.time()
+start_time = time.time()
 # head function
 def main_game():
-    global delta_t, current_time, cattle, predators, DETERMINED, quant_cattle, quant_predators
+    global delta_t, current_time, cattle, predators, grass, DETERMINED, quant_cattle, quant_predators, quant_fruits, food_time, start_time
     # if still works
     if not DETERMINED:
         determine_quantities_animals()
-        determine_grass()
+        determine_fruits()
         DETERMINED = True
 
     # period of update
     delta_t = time.time() - current_time
     current_time = time.time()
-
+    food_time += delta_t
     for p in predators:  # predators action
         if p.state == 0:
-            while ((p.coord_x - x_lake) / (a_axle + 0.5 * R)) ** 2 + ((p.coord_y - y_lake) / (b_axle + 0.5 * R)) ** 2 <= 1:
+            while ((p.coord_x - x_lake) / (a_axle + 0.5 * R)) ** 2 + (
+                    (p.coord_y - y_lake) / (b_axle + 0.5 * R)) ** 2 <= 1:
                 p.coord_x = randint(20, length - 20)
                 p.coord_y = randint(20, height - 20)
         if p.state == 4:
@@ -182,10 +198,10 @@ def main_game():
                 pass
             else:
                 r = ((p.coord_x - k.coord_x) ** 2 + (p.coord_y - k.coord_y) ** 2) ** 0.5  # distance from predator
-                if r <= r_min:                                                            # to predator
+                if r <= r_min:  # to predator
                     p.nearest_predator = k  # defines nearest cattle
                     r_min = r
-        #print('Здоровье: ', p.health, 'Жажда: ', p.thirst, 'Голод: ', p.hunger)
+        # print('Здоровье: ', p.health, 'Жажда: ', p.thirst, 'Голод: ', p.hunger)
         p.update()
         p.move(delta_t)
 
@@ -202,17 +218,23 @@ def main_game():
         c.update()
         c.move(delta_t)
 
-    for g in grass:
-        g.update()
-
+    for f in fruits:  # fruits life
+        if f.state == 3:
+            fruits.remove(f)
+            quant_fruits -= 1
+        f.update()
+    if food_time - start_time > 4:
+        food_generation()
+        food_time = time.time()
+        start_time = time.time()
     write_statistics(delta_t)  # writes quantity and time in massives below
-
 
 
 Time = []
 time_live = 0
 Quant_cattle = []
 Quant_predators = []
+Quant_fruits = []
 
 
 # remembers statistics to print it further(uses matplotlib)
