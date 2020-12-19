@@ -245,7 +245,7 @@ def main_game():
                     r_min = r
 
         if p.kills > 0 and p.kills > old_kills:  # Алгоритм увеличения количества хищников
-            Chance = randint(0, 100)
+            Chance = randint(0, 200)
             if Chance <= p.kills * 10:
                 predator_birn(p)
                 p.kills = 0
@@ -273,17 +273,14 @@ def main_game():
             if r <= r_min:
                 c.nearest_fruit = f  # defines nearest fruit
                 r_min = r
-<<<<<<< HEAD
 
         '''
-        if c.birfability > 0 :
-=======
         # creates another cattle if birthability is bigger than zero
         if c.birfability > 0:
->>>>>>> 1ddaa3ba8a980d6bdc046df2b625bf572c6e7dc9
             Chance = randint(0, 300)
             if Chance <= c.birfability * 10:
                 cattle_birn(c)
+                #del c.nearest_fruit
                 c.birfability = 0
         '''
         c.update()
