@@ -85,4 +85,4 @@ Wild Life - проект симуляции жизни травоядных жи
 - print_statistics -- отображает записанную статистику
 
 ### Пример отображаемой статистики:
-![Альтернативный текст](https://github.com/Petr1Dushnila1Blinov/WildLife/blob/main/test.png)
+![Альтернативный текст](https://github.com/Petr1Dushnila1Blinov/WildLife/blob/main/local.png)
