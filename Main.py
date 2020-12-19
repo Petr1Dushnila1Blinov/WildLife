@@ -273,7 +273,6 @@ def main_game():
             if r <= r_min:
                 c.nearest_fruit = f  # defines nearest fruit
                 r_min = r
-<<<<<<< HEAD
 
         '''
         if c.birfability > 0 :
