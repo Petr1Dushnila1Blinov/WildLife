@@ -43,8 +43,8 @@ class Animal:
             self.velocity_y *= -1
             self.coord_y += self.velocity_y * delta_t
         # controls if animals can enter lake surface
-        if ((x_lake - self.coord_x) / (a_axle + self.radius)) ** 2 + (
-                (y_lake - self.coord_y) / (b_axle + self.radius)) ** 2 <= 1:
+        if ((x_lake - self.coord_x) / (a_axle + 1.4*self.radius)) ** 2 + (
+                (y_lake - self.coord_y) / (b_axle + 1.4*self.radius)) ** 2 <= 1:
             self.velocity_y *= -1
             self.velocity_x *= -1
             self.coord_x += abs(random()) * self.velocity_x * delta_t
@@ -75,6 +75,7 @@ class Cattle(Animal):
         self.color = 'green'
         self.birfability = 0
         self.eaten = 0
+        self.count = 0
         self.under_attack = False
         self.notice_radius = 40  # radius where cattle notices objects
         self.id = canv.create_oval(self.coord_x - self.radius,
@@ -111,7 +112,7 @@ class Cattle(Animal):
 
     # function that identifies if there is lake near cattle
     def lake_nearby(self):
-        if ((self.coord_x - x_lake) / (a_axle + R)) ** 2 + ((self.coord_y - y_lake) / (b_axle + R)) ** 2 <= 1:
+        if ((self.coord_x - x_lake) / (a_axle + 1.8*self.radius)) ** 2 + ((self.coord_y - y_lake) / (b_axle + 1.8*self.radius)) ** 2 <= 1:
             return True
         else:
             return False
@@ -121,6 +122,7 @@ class Cattle(Animal):
         if object.state is not Fruit.st_dead and object.state is not Fruit.st_growing:
             self.hunger -= object.saturability
             self.birfability += int(object.saturability / 10)
+            self.eaten += 1
             self.health += 20
             self.thirst += 4
             self.nearest_fruit.health -= 200
@@ -248,7 +250,7 @@ class Predator(Animal):
 
     # function that identifies if there is lake near cattle
     def lake_nearby(self):
-        if ((self.coord_x - x_lake) / (a_axle + R)) ** 2 + ((self.coord_y - y_lake) / (b_axle + R)) ** 2 <= 1:
+        if ((self.coord_x - x_lake) / (a_axle + 1.8*self.radius)) ** 2 + ((self.coord_y - y_lake) / (b_axle + 1.8*self.radius)) ** 2 <= 1:
             return True
         else:
             return False
