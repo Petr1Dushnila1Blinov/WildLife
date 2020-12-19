@@ -69,10 +69,10 @@ Wild Life - проект симуляции жизни травоядных жи
 - start(*period*) -- начинает таймер с заданным периодом(*period*) 
 - update -- функция, обновляющая время
 
-# Функции Main.py
-- create_started_window -- создает меню управления
+# Функции Main.py!
 ![Альтернативный текст](https://github.com/Petr1Dushnila1Blinov/WildLife/blob/main/MAINOKNO.png)
 
+- create_started_window -- создает меню управления
 - determine_quantities_animals -- "создает" животных и задает их базовые параметры 
 - determine_fruits --  "создает" фрукты и задает их базовые параметры
 - food_generation -- генерирует еду на карте
