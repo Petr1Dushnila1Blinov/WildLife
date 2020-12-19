@@ -43,8 +43,8 @@ class Animal:
             self.velocity_y *= -1
             self.coord_y += self.velocity_y * delta_t
         # controls if animals can enter lake surface
-        if ((x_lake - self.coord_x) / (a_axle + self.radius)) ** 2 + (
-                (y_lake - self.coord_y) / (b_axle + self.radius)) ** 2 <= 1:
+        if ((x_lake - self.coord_x) / (a_axle + 1.4*self.radius)) ** 2 + (
+                (y_lake - self.coord_y) / (b_axle + 1.4*self.radius)) ** 2 <= 1:
             self.velocity_y *= -1
             self.velocity_x *= -1
             self.coord_x += abs(random()) * self.velocity_x * delta_t
@@ -111,7 +111,7 @@ class Cattle(Animal):
 
     # function that identifies if there is lake near cattle
     def lake_nearby(self):
-        if ((self.coord_x - x_lake) / (a_axle + R)) ** 2 + ((self.coord_y - y_lake) / (b_axle + R)) ** 2 <= 1:
+        if ((self.coord_x - x_lake) / (a_axle + 1.8*self.radius)) ** 2 + ((self.coord_y - y_lake) / (b_axle + 1.8*self.radius)) ** 2 <= 1:
             return True
         else:
             return False
@@ -248,7 +248,7 @@ class Predator(Animal):
 
     # function that identifies if there is lake near cattle
     def lake_nearby(self):
-        if ((self.coord_x - x_lake) / (a_axle + R)) ** 2 + ((self.coord_y - y_lake) / (b_axle + R)) ** 2 <= 1:
+        if ((self.coord_x - x_lake) / (a_axle + 1.8*self.radius)) ** 2 + ((self.coord_y - y_lake) / (b_axle + 1.8*self.radius)) ** 2 <= 1:
             return True
         else:
             return False
