@@ -269,6 +269,15 @@ def main_game():
                 c.nearest_predator = p  # defines nearest predator
                 r_min = r
 
+        for k in cattle:
+            if c == k:
+                pass
+            else:
+                r = ((k.coord_x - c.coord_x) ** 2 + (k.coord_y - c.coord_y) ** 2) ** 0.5 # distance from cattle to predator
+                if r <= r_min:
+                    c.nearest_cattle = c  # defines nearest predator
+                    r_min = r
+
         r_min = 1000000000
         for f in fruits:
             r = ((f.coord_x - c.coord_x) ** 2 + (f.coord_y - c.coord_y) ** 2) ** 0.5  # distance from cattle to predator

@@ -17,9 +17,9 @@ canv.pack(fill=tk.BOTH, expand=1)
 global GO_MAIN
 GO_MAIN = False
 
-Light_green = "#09e31f"
-Ripe_green = "#138f1f"
-Rotten_green = "#839e39"
+Light_green = "#f7b5dd"
+Ripe_green = "#aa19cf"
+Rotten_green = "#ab880c"
 
 
 # creates lake
@@ -63,7 +63,7 @@ class Fruit:
         self.size = 0  # коэф размера куска травы
         self.id = canv.create_rectangle(self.coord_x - 2 * self.size, self.coord_y + 2 * self.size,
                                         self.coord_x + 2 * self.size, self.coord_y + 2 * self.size,
-                                        fill=self.color, outline="gold")
+                                        fill=self.color, outline="#5c1841")
         self.clock = Clock()
 
     # if fruit is eaten we delete it
@@ -101,7 +101,7 @@ class Fruit:
             self.eaten()
         else:
             if self.state == Fruit.st_growing:
-                self.size = self.age/Fruit.Ripe * 2
+                self.size = self.age/Fruit.Ripe * 3
                 self.color = Light_green
             elif self.state == Fruit.st_ripe:
                 self.saturability -= (self.age - Fruit.Rotten) * 10
