@@ -118,21 +118,21 @@ class Cattle(Animal):
 
     # function that updates parametres after eating
     def eat(self, object):
-        if object.state is not Fruit.st_dead or object.state is not Fruit.st_growing:
+        if object.state is not Fruit.st_dead and object.state is not Fruit.st_growing:
             self.hunger -= object.saturability
             self.birfability += int(object.saturability / 10)
             self.health += 20
             self.thirst += 4
             self.nearest_fruit.health -= 200
             self.clock.start(200)
-            self.birfability += 0
+            self.birfability += 0.2
 
     # function that defines nearest fruit
     def notice_fruit(self):
         if self.nearest_fruit == None:
             return False
-        elif self.nearest_fruit is not self.nearest_fruit.st_growing\
-                and self.nearest_fruit is not self.nearest_fruit.st_dead:
+        elif self.nearest_fruit.state is not self.nearest_fruit.st_growing\
+                and self.nearest_fruit.state is not self.nearest_fruit.st_dead:
             r = math.sqrt((self.nearest_fruit.coord_x - self.coord_x) ** 2 +
                           (self.nearest_fruit.coord_y - self.coord_y) ** 2)
             if r <= self.notice_radius:
