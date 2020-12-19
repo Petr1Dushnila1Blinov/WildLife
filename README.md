@@ -72,6 +72,7 @@ Wild Life - проект симуляции жизни травоядных жи
 # Функции Main.py
 - create_started_window -- создает меню управления
 ![Альтернативный текст](https://github.com/Petr1Dushnila1Blinov/WildLife/blob/main/MAINOKNO.png)
+
 - determine_quantities_animals -- "создает" животных и задает их базовые параметры 
 - determine_fruits --  "создает" фрукты и задает их базовые параметры
 - food_generation -- генерирует еду на карте
