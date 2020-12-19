@@ -199,7 +199,7 @@ class Cattle(Animal):
                 self.thirst -= 80
                 self.health = 40000
 
-            if self.state == Cattle.st_hungry:
+            if self.state == Cattle.st_hungry and self.notice_fruit() is True:
                 d_x = (- self.coord_x + self.nearest_fruit.coord_x)
                 d_y = (- self.coord_y + self.nearest_fruit.coord_y)
                 r = math.sqrt(d_x ** 2 + d_y ** 2)
