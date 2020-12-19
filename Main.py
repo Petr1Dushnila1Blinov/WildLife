@@ -96,7 +96,7 @@ GO_START = True
 DESTROYED = False
 DETERMINED = False
 current_time = time.time()
-
+cattle_key = 100
 
 # generates a number of fruits
 def food_generation():
@@ -109,6 +109,7 @@ def food_generation():
         fruits[i] = Fruit()
         fruits[i].coord_x = randint(20, length - 20)
         fruits[i].coord_y = randint(20, height - 20)
+        fruits[i].state = Fruit.st_growing
 
 def predator_birn(object):
     global predators, quant_predators
@@ -273,6 +274,9 @@ def main_game():
             if r <= r_min:
                 c.nearest_fruit = f  # defines nearest fruit
                 r_min = r
+                if c.notice_fruit() is False:
+                    c.nearest_fruit = None
+                    r_min = 1000000000
 
         '''
         # creates another cattle if birthability is bigger than zero

@@ -48,9 +48,9 @@ class Fruit:
     st_ripe = 1
     st_rotten = 2
     st_dead = 3
-    Ripe = 500
-    Rotten = 1000
-    Dead = 1500
+    Ripe = 500 * 1
+    Rotten = 1000 * 1
+    Dead = 1500 * 1
 
     def __init__(self):
         self.coord_x = -10  # x coordinate
@@ -60,7 +60,7 @@ class Fruit:
         self.color = Light_green  # цвет куска травы, зависит от возраста
         self.health = 100  # прочность травы, в общем то, требуемое время на её поедание
         self.saturability = 100  # насыщаемость, как сильно животное наедается куском травы
-        self.size = 2  # коэф размера куска травы
+        self.size = 0  # коэф размера куска травы
         self.id = canv.create_rectangle(self.coord_x - 2 * self.size, self.coord_y + 2 * self.size,
                                         self.coord_x + 2 * self.size, self.coord_y + 2 * self.size,
                                         fill=self.color, outline="gold")
@@ -81,7 +81,7 @@ class Fruit:
 
     # controls states of fruits and changes it
     def state_machine(self):
-        if (self.health <= 0) or self.age >= Fruit.Dead:
+        if (self.health < 0) or self.age >= Fruit.Dead:
             self.state = Fruit.st_dead
         else:
             if self.age < Fruit.Ripe:
@@ -101,6 +101,7 @@ class Fruit:
             self.eaten()
         else:
             if self.state == Fruit.st_growing:
+                self.size = self.age/Fruit.Ripe * 2
                 self.color = Light_green
             elif self.state == Fruit.st_ripe:
                 self.saturability -= (self.age - Fruit.Rotten) * 10
