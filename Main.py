@@ -281,7 +281,7 @@ def main_game():
 
         # creates another cattle if birthability is bigger than zero
         if c.birfability > 0 and c.eaten > c.count:
-            Chance = randint(0, 3000)
+            Chance = randint(0, 2 * c.birfability)
             print(c.birfability)
             if Chance <= c.birfability:
                 cattle_birn(c)
