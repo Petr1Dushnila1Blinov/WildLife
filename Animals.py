@@ -75,6 +75,7 @@ class Cattle(Animal):
         self.color = 'green'
         self.birfability = 0
         self.eaten = 0
+        self.count = 0
         self.under_attack = False
         self.notice_radius = 40  # radius where cattle notices objects
         self.id = canv.create_oval(self.coord_x - self.radius,
@@ -121,6 +122,7 @@ class Cattle(Animal):
         if object.state is not Fruit.st_dead and object.state is not Fruit.st_growing:
             self.hunger -= object.saturability
             self.birfability += int(object.saturability / 10)
+            self.eaten += 1
             self.health += 20
             self.thirst += 4
             self.nearest_fruit.health -= 200

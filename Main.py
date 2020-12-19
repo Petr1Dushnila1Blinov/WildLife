@@ -64,7 +64,7 @@ length, height = 800, 600
 # function determines animals quantity and their location
 def determine_quantities_animals():
     global quant_cattle, cattle, quant_predators, predators
-    quant_cattle = 2 * int(scale_animal.get())  # takes quantity of cattle from SCALE in main menu
+    quant_cattle = 1 * int(scale_animal.get())  # takes quantity of cattle from SCALE in main menu
     cattle = [0] * quant_cattle
     for i in range(quant_cattle):  # filling map with cattle
         cattle[i] = Cattle()
@@ -96,7 +96,7 @@ GO_START = True
 DESTROYED = False
 DETERMINED = False
 current_time = time.time()
-cattle_key = 100
+
 
 # generates a number of fruits
 def food_generation():
@@ -124,7 +124,7 @@ def predator_birn(object):
 
 def cattle_birn(object):
     global cattle, quant_cattle
-    if object.birfability > 0 :
+    if object.birfability > 0:
         old_count = len(cattle)
         new_cattle = [0]
         cattle += new_cattle
@@ -133,6 +133,7 @@ def cattle_birn(object):
             cattle[i] = Cattle()
             cattle[i].coord_x = object.coord_x + 2
             cattle[i].coord_y = object.coord_y + 2
+            cattle[i].birfability = 0
 
 food_time = time.time()
 start_time = time.time()
@@ -278,15 +279,14 @@ def main_game():
                     c.nearest_fruit = None
                     r_min = 1000000000
 
-        '''
         # creates another cattle if birthability is bigger than zero
-        if c.birfability > 0:
-            Chance = randint(0, 300)
-            if Chance <= c.birfability * 10:
+        if c.birfability > 0 and c.eaten > c.count:
+            Chance = randint(0, 3000)
+            if Chance <= c.birfability:
                 cattle_birn(c)
                 #del c.nearest_fruit
                 c.birfability = 0
-        '''
+        c.count = c.eaten
         c.update()
         c.move(delta_t)
 
