@@ -333,5 +333,5 @@ class Predator(Animal):
                 self.velocity_x = 0
                 self.velocity_y = 0
                 self.clock.start(2)
-                self.thirst -= 80
+                self.thirst -= 130
                 self.health = 40000
