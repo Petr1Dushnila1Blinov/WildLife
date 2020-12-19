@@ -231,7 +231,7 @@ class Predator(Animal):
 
     # defines if cattle is next to the current predator
     def notice_cattle(self):
-        if self.nearest_cattle == None:
+        if self.nearest_cattle is None:
             return False
         elif self.nearest_cattle is not self.nearest_cattle.st_drink:
             r = math.sqrt((self.nearest_cattle.coord_x - self.coord_x) ** 2 +
