@@ -12,7 +12,7 @@ Wild Life - проект симуляции жизни травоядных жи
 # Используемые библиотеки
 - math
 - time
-- matplotlib.pyploy
+- matplotlib.pyplot
 - tkinter 
 - random
 - numpy
