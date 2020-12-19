@@ -48,9 +48,9 @@ class Fruit:
     st_ripe = 1
     st_rotten = 2
     st_dead = 3
-    Ripe = 500 * 4
-    Rotten = 1000 * 4
-    Dead = 1500 * 4
+    Ripe = 500 * 1
+    Rotten = 1000 * 1
+    Dead = 1500 * 1
 
     def __init__(self):
         self.coord_x = -10  # x coordinate
