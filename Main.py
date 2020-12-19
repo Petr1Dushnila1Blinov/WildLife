@@ -161,7 +161,7 @@ def main_game():
             fruits.remove(f)
             quant_fruits -= 1
         f.update()
-    if food_time - start_time > 4:
+    if food_time - start_time > 6:
         food_generation()
         food_time = time.time()
         start_time = time.time()
@@ -282,6 +282,7 @@ def main_game():
         # creates another cattle if birthability is bigger than zero
         if c.birfability > 0 and c.eaten > c.count:
             Chance = randint(0, 3000)
+            print(c.birfability)
             if Chance <= c.birfability:
                 cattle_birn(c)
                 #del c.nearest_fruit

@@ -77,7 +77,7 @@ class Cattle(Animal):
         self.eaten = 0
         self.count = 0
         self.under_attack = False
-        self.notice_radius = 40  # radius where cattle notices objects
+        self.notice_radius = 80  # radius where cattle notices objects
         self.id = canv.create_oval(self.coord_x - self.radius,
                                    self.coord_y - self.radius,
                                    self.coord_x + self.radius,
@@ -119,13 +119,16 @@ class Cattle(Animal):
 
     # function that updates parametres after eating
     def eat(self, object):
-        if object.state is not Fruit.st_dead and object.state is not Fruit.st_growing:
+        if object.state is not Fruit.st_dead and object.state is not Fruit.st_growing or object.health <= 0:
             self.hunger -= object.saturability
             self.birfability += int(object.saturability / 10)
             self.eaten += 1
             self.health += 20
             self.thirst += 4
+            object.health -= 200
             self.nearest_fruit.health -= 200
+            object.state = Fruit.st_dead
+            self.nearest_fruit.state = Fruit.st_dead
             self.clock.start(200)
 
 
