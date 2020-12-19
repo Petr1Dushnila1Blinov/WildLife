@@ -96,7 +96,7 @@ GO_START = True
 DESTROYED = False
 DETERMINED = False
 current_time = time.time()
-
+cattle_key = 100
 
 # generates a number of fruits
 def food_generation():
@@ -109,6 +109,7 @@ def food_generation():
         fruits[i] = Fruit()
         fruits[i].coord_x = randint(20, length - 20)
         fruits[i].coord_y = randint(20, height - 20)
+        fruits[i].age = 0
 
 def predator_birn(object):
     global predators, quant_predators

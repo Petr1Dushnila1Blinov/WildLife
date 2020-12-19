@@ -125,14 +125,14 @@ class Cattle(Animal):
             self.thirst += 4
             self.nearest_fruit.health -= 200
             self.clock.start(200)
-            self.birfability += 0.2
+
 
     # function that defines nearest fruit
     def notice_fruit(self):
         if self.nearest_fruit == None:
             return False
-        elif self.nearest_fruit.state is not self.nearest_fruit.st_growing\
-                and self.nearest_fruit.state is not self.nearest_fruit.st_dead:
+        elif self.nearest_fruit.state is self.nearest_fruit.st_ripe\
+                or self.nearest_fruit.state is self.nearest_fruit.st_rotten:
             r = math.sqrt((self.nearest_fruit.coord_x - self.coord_x) ** 2 +
                           (self.nearest_fruit.coord_y - self.coord_y) ** 2)
             if r <= self.notice_radius:
